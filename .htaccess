@@ -1,0 +1,8 @@
+# démarage du routeur de réécriture
+RewriteEngine On 
+
+# réécriture de l'url : on met une règle de réécriture
+# on précise quels caractères on va utiliser entre les ()
+# $1 fait référence à tout ce qu'on a trouvé entre les ()
+
+RewriteRule ^([a-zA-Z0-9\-\_\/]*)$ index.php?p=$1
