@@ -2,6 +2,9 @@
 namespace App\Models;
 use App\Main\Database;
 use PDO;
+use App\Models\ModelCatprod;
+
+
 /*
     Ici je met tout ce qui va me servir à manipuler les données. C'est un modèle général, je vais créer un modèle pour chaque table de la bdd qui contiendra 
     les informations qui lui sont spécifiques.
@@ -12,10 +15,25 @@ class Model extends Database{
     protected $table;
     protected $first_id;
     protected $second_id;
+    protected $columnToGetPrinted;
     // Instance de connexion
     private $db;
 
-/*
+
+    public function get_tableName()
+    {
+        return $this->table;
+    }
+    public function get_first_id()
+    {
+        return $this->first_id;
+    }
+    public function get_columnToGetPrinted()
+    {
+        return $this->columnToGetPrinted;
+    }
+
+    /*
     M Méthode principale qui va préparer les requêtes dans tous les cas de figure, elle va aussi vérifier si elle doit préparer ou non la requête
     O: PDOStatement|false (ce retour va être récupéré pour faire un fetchAll dessus)
     I: string $sql Requête SQL à exécuter + array $attributes Attributs à ajouter à la requête 
@@ -46,8 +64,8 @@ class Model extends Database{
     I: rien
 */
      
-    public function findAll() {
-        $query = $this->executerRequete('SELECT * FROM '.$this->table); //TODO : à vérifier 
+    public function findAll(string $condition=null) {
+        $query = $this->executerRequete('SELECT * FROM '.$this->table. ' '.$condition); //TODO : à vérifier 
         return $query->fetchAll();
     }
 /* find 
@@ -97,12 +115,50 @@ I: array $criteres Tableau de critères
         return $query->fetchAll();
     }
 
+    /*avoir toutes les valeurs des id de categoprod*/
+    /*Non utilisé*/
+    public function getIdValues(){
+        $condition= ($this->first_id.'asc');
+        $table=$this->findAll($condition);
+            foreach ($table as $id_value){
+                $values[]=$id_value['$this->first_id'];
+            }
+        var_dump ($values);
+        $this->id_values=$values;
+    }
 
+//n'importe quelle requete envoyée par une instance
+
+        public function planATrois(model $mainTable, model $tableAnnexe1, model $tableAnnexe2, string $condition)
+        {
+            
+            $table1=$tableAnnexe1->get_tableName();
+            $cle1=$tableAnnexe1->get_first_id();
+            $colonneAPublier1=$tableAnnexe1->get_columnToGetPrinted();
+
+            $table2=$tableAnnexe2->get_tableName();
+            $cle2=$tableAnnexe2->get_first_id();
+            $colonneAPublier2=$tableAnnexe2->get_columnToGetPrinted();
+            
+            $tablePrincipale=$this->get_tableName();
+            $colonnePrincipale=$this->get_columnToGetPrinted();
+
+            $listeSelect=('select '.$colonnePrincipale.', '.$colonneAPublier1.', '.$colonneAPublier2.' ');
+            $from=('from '.$tablePrincipale.' ');
+            $premiereJointure=('inner join '.$table1.' on '.$tablePrincipale.'.'.$cle1.' = '.$table1.'.'.$cle1.' ');
+            $secondeJointure=('inner join '.$table2.' on '.$tablePrincipale.'.'.$cle2.' = '.$table2.'.'.$cle2.' ');
+          
+            $requete=($listeSelect.$from.$premiereJointure.$secondeJointure.$condition);
+
+            $request = $this->executerRequete($requete);
+            return $request->fetchAll();
+        }
+
+        
 //trouver le nom de la catégorie correspondant à un item
 /*INUTILE : NE MARCHAIT QUE DANS LES CAS OU POUR TABLE LA PK EST ID_TABLE ET ID EST INT*/
-        public function findColumn(string $column, $id){
-            $nom_table=($column.'s');
-            $first_id=substr($this->table, 0, -1);
+        public function findColumn(string $column, string $secondeTable, $id, $condition = null){
+            $integriteReferentielle = ('on '.$id.'.'.$this->table.' = '.$id.'.'.$secondeTable);
             $request = $this->executerRequete('select nom_'.$column.' from '.$nom_table.' inner join '.$this->table.' on '.$nom_table.'.id_'.$column.' = '.$this->table.'.id_'.$column.' where id_'.$first_id.' = '.$id);
             return $request->fetch();
         }

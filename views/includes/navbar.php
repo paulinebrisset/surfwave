@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#"><img src="views/includes/assets/images/logo.png" alt="logo"></a>
+        <a class="navbar-brand" href="#"><img src="public/assets/images/logo.png" alt="logo"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,7 +26,7 @@
             <form class="form-inline my-2 my-md-0">
                 <input class="form-control" type="text" placeholder="Recherche" aria-label="Search">
             </form>
-            <button type="button" class="btn">Connexion</button>
+            <button type="button" class="btn" id="ouvertureFenetreConnexion">Connexion</button>
         </div>
     </div>
 </nav>

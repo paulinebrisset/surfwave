@@ -176,3 +176,40 @@ INSERT INTO TARIFS VALUES
 ('J4', 'CO', '35.00'),
 ('J5', 'CO', '35.00'),
 ('J6', 'CO', '35.00');
+
+--AFFICHAGE DES TARIFS
+
+-- requete a prevoir select *, libDuree from tarifs inner join duree on duree.codeDuree=tarifs.codeDuree order by tarifs.codeDuree ASC, categoProd DESC; 
+
+-- Nouvelle version 
+select distinct tarifs.codeDuree, tarifs.*, libDuree from tarifs 
+inner join duree on tarifs.codeDuree=duree.codeDuree  
+order by tarifs.codeDuree asc, 
+case 
+when (tarifs.categoProd LIKE "PS") then 1 
+when tarifs.categoProd LIKE "BB" then 2
+when tarifs.categoProd LIKE "CO"  then 3
+end
+--Le distinct ne marche pas mieux ici 
+
+
+-- Nouvelle version deux tables
+select prixLocation, libDuree from tarifs 
+inner join duree on tarifs.codeDuree=duree.codeDuree  
+order by tarifs.codeDuree asc, 
+case 
+when (tarifs.categoProd LIKE "PS") then 1 
+when tarifs.categoProd LIKE "BB" then 2
+when tarifs.categoProd LIKE "CO"  then 3
+end
+
+-- Nouvelle version trois tables
+select prixLocation, libDuree, libcategoProd from tarifs 
+inner join duree on tarifs.codeDuree=duree.codeDuree  
+inner join catProd on tarifs.categoProd=catProd.categoProd  
+order by tarifs.codeDuree asc, 
+case 
+when tarifs.categoProd LIKE "PS" then 1 
+when tarifs.categoProd LIKE "BB" then 2
+when tarifs.categoProd LIKE "CO"  then 3
+end

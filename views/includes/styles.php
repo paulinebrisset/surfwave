@@ -1,2 +1,2 @@
-<link rel="stylesheet" href="/views/includes/assets/css/bootstrap.css">
-<link rel="stylesheet" href="/views/includes/assets/css/style.css">
+<link rel="stylesheet" href="/public/assets/css/bootstrap.css">
+<link rel="stylesheet" href="/public/assets/css/style.css">

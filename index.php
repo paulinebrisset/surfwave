@@ -24,9 +24,7 @@ $app = new Main();
 
 $app->start();
 
-/*****MODEal */ ?>
+/*****MODAL****/ ?>
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/views/includes/js.php') ?>
 </body>
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/views/includes/footer.php') ?>
-
 </html>
