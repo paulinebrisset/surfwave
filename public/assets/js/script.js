@@ -15,6 +15,5 @@ var btnConnexion = document.getElementById("btnConnexion");
 btnConnexion.addEventListener("click", securiserLaSaisie);
 //TODO
 function securiserLaSaisie() {
-        document.forms["formConnexion"].submit(); 
-    
+        document.forms["formConnexion"].submit();    
 };
