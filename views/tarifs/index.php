@@ -17,6 +17,7 @@
             <thead>
                <tr>
                   <?php
+                  var_dump($tarifs);
                   //Impression de la liste des matériels dispos (libellés)
                   echo ('<th>Tarifs location</th>');
                   for ($j = 0; $j < 3; $j++) {
@@ -46,6 +47,7 @@
                         '<td>' . $location['prixLocation'] . '</td>');
                   }
                }
+               echo('</tr>');
                ?>
             </tbody>
          </table>

@@ -23,13 +23,16 @@ class Model extends Database
     private $db;
 
 
-    public function get_tableName() {
+    public function get_tableName()
+    {
         return $this->table;
     }
-    public function get_first_id() {
+    public function get_first_id()
+    {
         return $this->first_id;
     }
-    public function get_columnToGetPrinted() {
+    public function get_columnToGetPrinted()
+    {
         return $this->columnToGetPrinted;
     }
 
@@ -134,7 +137,7 @@ I: array $criteres Tableau de critères
 
     //n'importe quelle requete envoyée par une instance
 
-    public function planATrois(model $tableAnnexe1, model $tableAnnexe2, string $condition)
+    public function planATrois(model $tableAnnexe1, model $tableAnnexe2, string $condition, bool $toutesColonnes)
     {
         /*Gros assemblage
             Pour chaque model(=table), dont le model qui appelle la fonction, on va aller chercher
@@ -142,7 +145,6 @@ I: array $criteres Tableau de critères
             le nom de l'id
             le nom de la "jolie colonne" (celle qui contient l'affichage)
             */
-
 
         $table1 = $tableAnnexe1->get_tableName();
         $cle1 = $tableAnnexe1->get_first_id();
@@ -156,10 +158,16 @@ I: array $criteres Tableau de critères
         $tablePrincipale = $this->get_tableName();
         $colonnePrincipale = $this->get_columnToGetPrinted();
 
-        //je sélectionne les "jolie colonnes" dans un select
-
-        $listeSelect = ('select ' . $colonnePrincipale . ', ' . $colonneAPublier1 . ', ' . $colonneAPublier2 . ' ');
-
+        //je sélectionne les "jolie colonnes" dans un select pour la vue au public
+        if ($toutesColonnes == false) {
+            $listeSelect = ('select ' . $colonnePrincipale . ', ' . $colonneAPublier1 . ', ' . $colonneAPublier2 . ' ');
+        }
+        //je sélectionne plus de colonnes pour la partie gestion
+        else if ($toutesColonnes == true) {
+            $first_id = $this->first_id;
+            $second_id = $this->second_id;
+            $listeSelect = ('select ' . $colonnePrincipale . ', ' . $colonneAPublier1 . ', ' . $colonneAPublier2 . ', ' . $tablePrincipale . '.' . $first_id . ', ' . $tablePrincipale . '.' . $second_id . ' ');
+        }
         $from = ('from ' . $tablePrincipale . ' ');
         //Je fais respecter l'intégrité référentielle
         $premiereJointure = ('inner join ' . $table1 . ' on ' . $tablePrincipale . '.' . $cle1 . ' = ' . $table1 . '.' . $cle1 . ' ');

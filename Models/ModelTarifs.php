@@ -26,11 +26,13 @@ class ModelTarifs extends Model
     {
         return $this->columnToGetPrinted;
     }
-    // public function getTarificationData(string $column, string $critere, string $secondeTable, $condition = null)
-    public function getTarificationData(model $instanceTarifs, model $instanceDuree, model $instanceCatprod)
-    {
-        
+    
 
+    public function getTarificationData(bool $param)
+    {
+        $instanceTarifs = new ModelTarifs;
+        $instanceDuree = new ModelDuree;
+        $instanceCatprod = new ModelCatprod;
 
         $nomTablePrincipale = $instanceTarifs->get_tableName(); /*je récupère le nom de la table qui contient les tarifs*/
 
@@ -59,8 +61,8 @@ class ModelTarifs extends Model
             }
 
         $condition .= ' end ';
-
+   
         //L J'utilise une fonction de Model pour aller chercher les résultats et les ramener à la fonction qui a appelé celle-ci
-        return $this->planATrois($instanceDuree, $instanceCatprod, $condition);
+        return $this->planATrois($instanceDuree, $instanceCatprod, $condition, $param);
     }
 }

@@ -15,18 +15,19 @@ public function index(){
         include_once ROOT.'/views/items/index.php';
     */
 
-        //instancier la classe ModelItems
-        $articlesModel = new ModelTarifs;
-        //On va chercher toutes les annonces publiées grâce à une méthode du Modèle
-        $articles=$articlesModel->findAll();
+    $instanceTarifs = new ModelTarifs;
+              
+    //J'utilise une méthode de ModelTarifs pour aller récupérer tous les tarifs
+    //Cette méthode préparera la requête et la fera excécuter via des méthode de Model et de Database
+    $prix = $instanceTarifs->getTarificationData(true);
         /*
         Là c'est une méthode de Controller. On lui file  
         1 - le nom du fichier qui va ouvrir les résultats
         et 2- la varibale qui contient la requête qui contient les données que l'on veut afficher
         render se chargera de générer la vue
         */
-
-        $this->render('gestionArticles/index',['articles'=>$articles]);
+        $tableau_vues_donnees[] = ['gestion/index',['prix'=>$prix]];
+        $this->render($tableau_vues_donnees);
     }
 
 /****Affiche d'article à modifier */

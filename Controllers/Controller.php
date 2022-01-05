@@ -25,18 +25,6 @@ abstract class Controller
                 extract($tableau_vues_donnees[$i][1]);
             }
         }
-
-        echo ("<br/>");
-        var_dump($tableau_vues_donnees[0][0]);
-        echo ("<br/><br/>");
-
-        var_dump($tableau_vues_donnees[1][0]);
-        echo ("<br/><br/>");
-
-        var_dump($tableau_vues_donnees[2][0]);
-        echo ("<br/>");
-        
-        echo (sizeof($tableau_vues_donnees));
         // Crée le chemin et inclut le fichier de vue
 
         /*
