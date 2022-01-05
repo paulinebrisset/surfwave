@@ -48,9 +48,6 @@ abstract class Controller {
 
         $content = ob_get_clean();
 
-        // if ($template=="home"){
-        //     require_once(ROOT.'/Views/'.$template.'.php');
-        // } else {
             // On fabrique le "template" avec default.php qui a un espace prévu pour la variable $contenu
             require_once($_SERVER['DOCUMENT_ROOT'].'/Views/'.$template.'.php');
 

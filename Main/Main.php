@@ -46,6 +46,7 @@ class Main
 
         if (!empty($uri) && $uri != '/' && $uri[-1] === '/') { //il y a quand même un slash systématique à la fin paraît-il, au moins sur la page d'accueil
             // Dans ce cas on enlève le /
+       
             $uri = substr($uri, 0, -1);
 
             // On envoie un code de redirection permanente pour ne pas avoir la page en double
@@ -64,12 +65,14 @@ class Main
         explode -> contraire de implode
         */
         $params = [];
+        
         if (isset($_GET['p'])) {
             $params = explode('/', $_GET['p']);
         }
 
         // On vérifie si on a au moins un paramètre (donc si il y en a un dans $params[0])
         if ($params[0] != "") {
+         
             /*
         PARAM 1    
             Le 1er param va correspondre au nom du controller, mais il va falloir refabriquer l'adresse du ficihier (avec le namespace)
@@ -79,14 +82,14 @@ class Main
         */
 
         // Je contrôle si l'utilisateur est admin avant de continuer. Toutes les fonctions de cette classe renvoient vers des pages destinées exclusivement à l'admin
-            if (strcasecmp($params[0],'gestion')==0) { //strcasecmp pour ignorer la casse
-                $instanceLoginController = new LoginController;
-                if ($instanceLoginController->isTheUserAnAdmin() == false) {
-                    http_response_code(404);
-                    $instanceLoginController->render('404');
-                    exit;
-                }
-            } 
+            // if (strcasecmp($params[0],'gestion')==0) { //strcasecmp pour ignorer la casse
+            //     $instanceLoginController = new LoginController;
+            //     if ($instanceLoginController->isTheUserAnAdmin() == false) {
+            //         http_response_code(404);
+            //         $instanceLoginController->render('404');
+            //         exit;
+            //     }
+            // } 
 
             $controller = '\\App\\Controllers\\' . ucfirst(array_shift($params)) . 'Controller'; //array_shift enlève la première valeur d'un tableau
             // On instancie le contrôleur
