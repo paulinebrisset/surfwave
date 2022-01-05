@@ -16,7 +16,6 @@ require_once ROOT . '\Autoload.php';
 //on a fait une fonction static, c'est pour ça que l'on n'a pas besoin d'instancier la classe autoload pour utiliser register
 Autoload::register();
 
-
 /*****Main******/
 //On instancie Main qui va être chargé du lancement de l'application (router)
 $app = new Main();

@@ -29,28 +29,38 @@ class ModelTarifs extends Model
     // public function getTarificationData(string $column, string $critere, string $secondeTable, $condition = null)
     public function getTarificationData(model $instanceTarifs, model $instanceDuree, model $instanceCatprod)
     {
+        
+
+
+        $nomTablePrincipale = $instanceTarifs->get_tableName(); /*je récupère le nom de la table qui contient les tarifs*/
+
+        // Là je vais écrire la condition. Je veux récupérer la phrase suivante : 
+
         // ('order by
         //     tarifs.codeDuree asc, 
         //     case 
+
         //         when tarifs.categoProd LIKE "PS" then 1 
         //         when tarifs.categoProd LIKE "BB" then 2
         //         when tarifs.categoProd LIKE "CO"  then 3
         //     end
         // ');
 
-        $nomTablePrincipale = $instanceTarifs->get_tableName();
-        /*organiser l'ordre de réception des tarifs
-        j'ai un tableau qui contient tous les id dans ModelCatProd*/
-
         $condition =      
-        ('order by '. $nomTablePrincipale.'.'.$instanceDuree->get_first_id().', case ');
+        ('order by '. $nomTablePrincipale.'.'.$instanceDuree->get_first_id().' asc, case '); 
+        
+       /* Maintenant, le but c'est que les tarifs soient récupérés dans l'ordre souhaité pour l'affichage : 
+        les planches de surf en premier, puis bodyboard, puis combinaisons. 
+        Cet ordre est mémorisé dans un tableau de ModelCatProd */
 
+        $tableauIdsCatProd=$instanceCatprod->id_values;
+            foreach ($tableauIdsCatProd as $abreviation=>$rang){
+                $condition .=(' when '.$nomTablePrincipale.'.'.$instanceCatprod->first_id.' like "'.$abreviation.'" then '.$rang);
+            }
 
-        $catprodIds=$instanceCatprod->id_values;
-        foreach ($catprodIds as $abreviation=>$rang){
-            $condition .=(' when '.$nomTablePrincipale.'.'.$instanceCatprod->first_id.' like "'.$abreviation.'" then '.$rang);
-        }
         $condition .= ' end ';
-        return $this->planATrois($instanceTarifs, $instanceDuree, $instanceCatprod, $condition);
+
+        //L J'utilise une fonction de Model pour aller chercher les résultats et les ramener à la fonction qui a appelé celle-ci
+        return $this->planATrois($instanceDuree, $instanceCatprod, $condition);
     }
 }

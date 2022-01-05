@@ -65,6 +65,7 @@ class Main
         explode -> contraire de implode
         */
         $params = [];
+        
         if (isset($_GET['p'])) {
             $params = explode('/', $_GET['p']);
         }

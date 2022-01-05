@@ -17,19 +17,19 @@
    </section>
    <!--FORMULAIRE DE LOGIN -->
    <section class="container elementCache" id="formulaireConnexion">
-      <form>
+      <form id="formConnexion">
          <div class="row">
          <div class="form-group col">
            <label for="email">Adresse mail</label>
-           <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Votre mail">
+           <input type="email" class="form-control" required="required" id="email" aria-describedby="emailHelp" placeholder="Votre mail">
            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
          </div>
          <div class="form-group col">
            <label for="mdp">Mot de passe</label>
-           <input type="password" class="form-control" id="mdp" placeholder="Mot de passe">
+           <input type="password" class="form-control" required="required" id="mdp" placeholder="Mot de passe">
          </div>
       </div>
-         <button type="submit" class="btn btn-primary">Se connecter</button>
+         <button type="sumbit" class="btn btn-primary" id="btnConnexion">Se connecter</button>
       
        </form>
    </section>

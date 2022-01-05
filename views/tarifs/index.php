@@ -17,27 +17,29 @@
             <thead>
                <tr>
                   <?php
-                  //Impression de la liste des matériels dispos
+                  //Impression de la liste des matériels dispos (libellés)
                   echo ('<th>Tarifs location</th>');
-                  for ($i = 0; $i < 3; $i++) {
-                     echo ('<th>' . $tarifs[$i]['libCategoProd'] . '</th>');
-                  } ?>
+                  for ($j = 0; $j < 3; $j++) {
+                     echo ('<th>' . $tarifs[$j]['libCategoProd'] . '</th>');
+                  }?>
                </tr>
             </thead>
             <tbody>
                <?php
                //impression de tous les tarifs
-
-               // Initialisation avec la première cellule, qui doit afficher "1 heure"
-               $counter = $tarifs[0]['libDuree'];
+              
+               $counter = $tarifs[0]['libDuree']; //counter va retenir le libDuree, et changer si on est arrivé "au bout" d'un libDuree
                echo ('<tr>');
-               echo ('<td>' . $tarifs[0]['libDuree'] . '</td>');
+               echo ('<td>' . $tarifs[0]['libDuree'] . '</td>'); // Initialisation avec la première cellule, qui doit afficher "1 heure"
+               
                foreach ($tarifs as $location) {
+                  //if/else doit déterminer si on complète une ligne commencée ou si on doit créer une nouvelle ligne dans le tableau
 
-                  //tant qu'on parle toujours de la même durée de location -> comparaison de deux chaînes de caractères
+                  //tant qu'on parle toujours de la même durée de location = comparaison de deux chaînes de caractères
                   if (strcmp($location['libDuree'], $counter) == 0) {
                      echo ('<td>' . $location['prixLocation'].'</td>');
                   } else {
+                  //changement de duree de location
                      $counter = $location['libDuree'];
                      echo ('</tr><tr>');
                      echo ('<td>' . $location['libDuree'] . '</td>' .
