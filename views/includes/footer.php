@@ -1,5 +1,4 @@
 <footer>
-   <h1>Footer</h1>
       <div class="container">
          <div id="navigation">
             <div class="row justify-content-center">

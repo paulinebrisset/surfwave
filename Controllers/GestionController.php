@@ -1,37 +1,75 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Models\ModelTarifs;
 use App\Models\ModelCatprod;
 use App\Models\ModelDuree;
 
-class GestionController extends Controller{
+class GestionController extends Controller
+{
 
-  
-public function index(){
-    /*
+
+    public function index()
+    {
+        /*
         M : affiche une page listant toutes les annonces de la base de données (version tableau)
         I : rien
         Bonus : toutes les variables que je voudrais créer ici seront accessibles depuis le include de juste en dessous
         include_once ROOT.'/views/items/index.php';
     */
 
-    $instanceTarifs = new ModelTarifs;
-              
-    //J'utilise une méthode de ModelTarifs pour aller récupérer tous les tarifs
-    //Cette méthode préparera la requête et la fera excécuter via des méthode de Model et de Database
-    $prix = $instanceTarifs->getTarificationData(true);
+
+        $instanceTarifs = new ModelTarifs;
+
+        //J'utilise une méthode de ModelTarifs pour aller récupérer tous les tarifs
+        //Cette méthode préparera la requête et la fera excécuter via des méthode de Model et de Database
+        $prix = $instanceTarifs->getTarificationData(true);
+
+        /**** TEST DU UPDATE*/
+        $this->testerUpdate($prix);
+        /*******FIN DU TEST */
         /*
         Là c'est une méthode de Controller. On lui file  
         1 - le nom du fichier qui va ouvrir les résultats
         et 2- la varibale qui contient la requête qui contient les données que l'on veut afficher
         render se chargera de générer la vue
         */
-        $tableau_vues_donnees[] = ['gestion/index',['prix'=>$prix]];
-        $this->render($tableau_vues_donnees);
+
+        /*Je vais chercher séparérement le libellés des catégories de produits, sinon l'affichage plante 
+        dans le cas où l'un des tarifs à afficher sur la première ligne est delete
+        */
+        $instanceModelCatProd= new ModelCatprod;
+        $option =$instanceModelCatProd->get_lib_values();
+        
+        $tableau_vues_donnees[] = ['gestion/index', ['prix' => $prix]];
+        $this->render($tableau_vues_donnees, 'default', $option);
+    }
+    /*
+    regarder si un tarif a été modifié
+    Si au moins un tarif est modifié : on enregistre son $post dans un tableau clé=>valeur
+    et à la fin, on envoie le tableau au Model Tarif 
+    */
+    public function testerUpdate($prix)
+    {
+        $prixAChanger = [];
+        //Il ne passe pas dans le foreach si $prix est vide
+        foreach ($prix as $tarif) {
+
+            $cle = ($tarif['codeDuree'] . $tarif['categoProd']);
+            if (isset($_POST[$cle]) and ($_POST[$cle]) != null) {
+                $instanceModelTarif = new ModelTarifs;
+                $prixAChanger[$cle] = ($_POST[$cle]);
+            }
+        }
+        $instanceModelTarif = new ModelTarifs;
+        $var = $instanceModelTarif->updateTarif($prixAChanger);
     }
 
-/****Affiche d'article à modifier */
-    public function editer(int $id_item = 1){
+
+    /****Affiche d'article à modifier */
+    public function editer(int $id_item = 1)
+    {
         // On instancie le modèle
         $instanceModel = new ModelItems;
 
@@ -43,48 +81,49 @@ public function index(){
             $this->render('items/index',['item'=>$item]);
         */
     }
-/****Création d'un nouveal article */
-    public function creer(){
+    /****Création d'un nouveal article */
+    public function creer()
+    {
         $this->render('gestionArticles/creer');
     }
-    public function actualiserArticle(int $id, string $titre, string $description, $publie, $prix, int $categorie, $image='default.png'){
-       
+    public function actualiserArticle(int $id, string $titre, string $description, $publie, $prix, int $categorie, $image = 'default.png')
+    {
+
         // On instancie le modèle items
         $instanceItem = new ModelItems;
 
         $mesDonnees = [
-            'titre'=> $titre,
-            'description'=> $description,
-            'prix'=> $prix,
-            'publie'=> $publie,
-            'id_categorie'=>$categorie,
-            'image'=>$image
-            ];
+            'titre' => $titre,
+            'description' => $description,
+            'prix' => $prix,
+            'publie' => $publie,
+            'id_categorie' => $categorie,
+            'image' => $image
+        ];
 
-        $instanceItem->update($id,$mesDonnees);
-    
+        $instanceItem->update($id, $mesDonnees);
+
         header('Location: /gestionArticles');
     }
 
-    public function creerArticle(string $titre, string $description, $prix, $publie, $categorie, $image="default.png", $date=null){
+    public function creerArticle(string $titre, string $description, $prix, $publie, $categorie, $image = "default.png", $date = null)
+    {
         // On instancie le modèle items
         $instanceItem = new ModelItems;
         date_default_timezone_set('UTC');
-        $date=date("Y-m-d");
+        $date = date("Y-m-d");
 
 
         $mesDonnees = [
-        'date'=>$date,
-        'titre'=> $titre,
-        'description'=> $description,
-        'prix'=> $prix,
-        'publie'=> $publie,
-        'id_categorie'=>$categorie,
-        'image'=>$image
+            'date' => $date,
+            'titre' => $titre,
+            'description' => $description,
+            'prix' => $prix,
+            'publie' => $publie,
+            'id_categorie' => $categorie,
+            'image' => $image
         ];
 
         $instanceItem->creer($mesDonnees);
     }
-
-    }
-  ?>
+}

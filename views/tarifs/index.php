@@ -17,37 +17,36 @@
             <thead>
                <tr>
                   <?php
-                  var_dump($tarifs);
                   //Impression de la liste des matériels dispos (libellés)
                   echo ('<th>Tarifs location</th>');
-                  for ($j = 0; $j < 3; $j++) {
-                     echo ('<th>' . $tarifs[$j]['libCategoProd'] . '</th>');
-                  }?>
+                  foreach ($option as $nomColonnes) {
+                     echo ('<th>' . $nomColonnes . '</th>');
+                  } ?>
                </tr>
             </thead>
             <tbody>
                <?php
                //impression de tous les tarifs
-              
+
                $counter = $tarifs[0]['libDuree']; //counter va retenir le libDuree, et changer si on est arrivé "au bout" d'un libDuree
                echo ('<tr>');
                echo ('<td>' . $tarifs[0]['libDuree'] . '</td>'); // Initialisation avec la première cellule, qui doit afficher "1 heure"
-               
+
                foreach ($tarifs as $location) {
                   //if/else doit déterminer si on complète une ligne commencée ou si on doit créer une nouvelle ligne dans le tableau
 
                   //tant qu'on parle toujours de la même durée de location = comparaison de deux chaînes de caractères
                   if (strcmp($location['libDuree'], $counter) == 0) {
-                     echo ('<td>' . $location['prixLocation'].'</td>');
+                     echo ('<td>' . $location['prixLocation'] . '</td>');
                   } else {
-                  //changement de duree de location
+                     //changement de duree de location
                      $counter = $location['libDuree'];
                      echo ('</tr><tr>');
                      echo ('<td>' . $location['libDuree'] . '</td>' .
                         '<td>' . $location['prixLocation'] . '</td>');
                   }
                }
-               echo('</tr>');
+               echo ('</tr>');
                ?>
             </tbody>
          </table>

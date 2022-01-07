@@ -28,12 +28,16 @@ class MainController extends Controller
         //Cette méthode préparera la requête et la fera excécuter via des méthode de Model et de Database
 
         $tarifs = $instanceTarifs->getTarificationData(false);
-        
+                /*Je vais chercher séparérement le libellés des catégories de produits, sinon l'affichage plante 
+        dans le cas où l'un des tarifs à afficher sur la première ligne est delete
+        */
+        $instanceModelCatProd= new ModelCatprod;
+        $option =$instanceModelCatProd->get_lib_values();
         /* ensuite je prépare un tableau à envoyer à Controller, il contient toutes les
         vues à afficher sur la page d'accueil*/
 
         $tableau_vues_donnees = $this->get_tableau_vues_donnees();
         $tableau_vues_donnees[1] = ['tarifs/index', ['tarifs' => $tarifs]];
-        $this->render($tableau_vues_donnees, 'default');
+        $this->render($tableau_vues_donnees, 'default', $option);
     }
 }

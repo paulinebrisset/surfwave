@@ -13,7 +13,7 @@ abstract class Controller
         tableau vide par défaut, on pourra ne pas avoir de données.
     */
 
-    public function render(array $tableau_vues_donnees, string $template = 'default')
+    public function render(array $tableau_vues_donnees, string $template = 'default', array $option = [])
     {
         /*
             prend mon tableau et crée une variable pour chacune des clés renseignées
@@ -25,29 +25,24 @@ abstract class Controller
                 extract($tableau_vues_donnees[$i][1]);
             }
         }
+        extract($option);
         // Crée le chemin et inclut le fichier de vue
 
         /*
         On démarre le buffer de sortie a partir de maintenant, 
         chaque echo sera mis en mémoire, puis tout ce qui est en mémoire 
         doit être mis dans une variable
-    */
 
-
-
-        /* 
         A partir de maintenant, toute sortie est conservée en mémoire
         cad que les echo
     */
-        $content='';
+        $content = '';
         // Crée le chemin et inclut le fichier de vue
         for ($i = 0; $i < sizeof($tableau_vues_donnees); $i++) {
             ob_start();
             require_once($_SERVER['DOCUMENT_ROOT'] . '/Views/' . $tableau_vues_donnees[$i][0] . '.php');
-            $content .= ob_get_clean();        
+            $content .= ob_get_clean();
         }
-
-     
 
         /* 
         On stocke le contenu dans $content

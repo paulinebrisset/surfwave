@@ -1,11 +1,12 @@
 <?php
 
-use App\Controllers\GestionController;
+// use App\Controllers\GestionController;
 
-if (isset($_POST['modifier'])) {
-   var_dump($_POST['publie']);
-   $instanceGestionController = new GestionController;
-}
+// if (isset($_POST['modifier'])) {
+//    var_dump($_POST['publie']);
+//    $instanceGestionController = new GestionController;
+// }
+
 ?>
 <section class="d-none d-md-none d-xl-block">
    <div class="container">
@@ -16,19 +17,25 @@ if (isset($_POST['modifier'])) {
             <thead>
                <tr>
                   <?php
+
                   //Impression de la liste des matériels dispos (libellés)
                   echo ('<th>Produit<br/>Temps </th>');
-                  for ($j = 0; $j < 3; $j++) {
-                     echo ('<th>' . $prix[$j]['libCategoProd'] . '</th>');
-                  } 
+                  foreach ($option as $nomColonnes) {
+                     echo ('<th>' . $nomColonnes . '</th>');
+                  }
+                  // for ($j = 0; $j < 3; $j++) {
+                  //    echo ('<th>' . $prix[$j]['libCategoProd'] . '</th>');
+                  // }
                   echo ('<th>MAJ les tarifs</th>');
                   ?>
                </tr>
             </thead>
             <tbody>
                <?php
-               //impression de tous les tarifs
 
+               echo ('<form method="post" action="">');
+               //$prix=$tableau_vues_donnees[1];
+               //impression de tous les tarifs
                $counter = $prix[0]['libDuree']; //counter va retenir le libDuree, et changer si on est arrivé "au bout" d'un libDuree
                echo ('<tr>');
                echo ('<td>' . $prix[0]['libDuree'] . '</td>'); // Initialisation avec la première cellule, qui doit afficher "1 heure"
@@ -38,27 +45,25 @@ if (isset($_POST['modifier'])) {
 
                   //tant qu'on parle toujours de la même durée de location = comparaison de deux chaînes de caractères
                   if (strcmp($location['libDuree'], $counter) == 0) {
-                    echo ('<td>
-                            <input id='.$location['codeDuree'].$location['categoProd'].' type="number" method="post" placeholder="'.$location['prixLocation'].'"></form>
-                        </td>');
-                     //echo ('<td>' . $location['prixLocation'] . '</td>');
+                     echo ('<td>
+                            <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" method="post" placeholder="' . $location['prixLocation'] . '">                        </td>');
                   } else {
                      //changement de duree de location
                      $counter = $location['libDuree'];
                      echo ('<td>
-                            <form method="post" action="gestion/modifier/<?php echo $location["id_item"] ?><input type="submit" class="btn btn-outline-danger" value="Modifier"></form>
+                    <button type="submit" class="btn btn-outline-danger">ModifieR
                         </td>');
                      echo ('</tr><tr>');
-                     echo ('<td>' . $location['libDuree'] . '</td>' );
+                     echo ('<td>' . $location['libDuree'] . '</td>');
                      echo ('<td>
-                     <input id='.$location['codeDuree'].$location['categoProd'].' type="number" method="post" placeholder="'.$location['prixLocation'].'"></form>
-                 </td>');
+                     <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" method="post" placeholder="' . $location['prixLocation'] . '">                 </td>');
                   }
                }
                echo ('<td>
-                            <form method="post" action="gestion/modifier/<?php echo $location["id_item"] ?><input type="submit" class="btn btn-outline-danger" value="Modifier"></form>
+                            <input type="submit" class="btn btn-outline-danger" value="Modifier">
                         </td>');
                echo ('</tr>');
+               echo ('</form>');
                ?>
             </tbody>
          </table>

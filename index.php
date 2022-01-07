@@ -3,8 +3,11 @@
 //C'est le fichier d'entrée de mon application. Il appelle Main, qui est mon routeur.
 use App\Autoload;
 use App\Main\Main;
-
-
+/*TEST*/
+$tableau=[];
+foreach ($tableau as $blabla){
+    echo('bonjour');
+}
 //Je définis une constante, ROOT, qui désigne le dossier racine du projet, qui est le dossier parent de public, d'om l'utilisation de dirname pour définir root
 
 define('ROOT', dirname(__FILE__)); //définit le root là où est index.php
@@ -20,7 +23,6 @@ Autoload::register();
 //On instancie Main qui va être chargé du lancement de l'application (router)
 $app = new Main();
 //On démarre l'application
-
 $app->start();
 
 /*****MODAL****/ ?>

@@ -186,7 +186,6 @@ VALUES
 --AFFICHAGE DES TARIFS
 -- requete a prevoir select *, libDuree from tarifs inner join duree on duree.codeDuree=tarifs.codeDuree order by tarifs.codeDuree ASC, categoProd DESC; 
 -- Nouvelle version 
-
 select
     distinct tarifs.codeDuree,
     tarifs.*,
@@ -200,11 +199,7 @@ order by
         when (tarifs.categoProd LIKE "PS") then 1
         when tarifs.categoProd LIKE "BB" then 2
         when tarifs.categoProd LIKE "CO" then 3
-    end 
-    
-    --Le distinct ne marche pas mieux ici 
-    
-    
+    end --Le distinct ne marche pas mieux ici 
     -- Nouvelle version deux tables
 select
     prixLocation,
@@ -218,9 +213,7 @@ order by
         when (tarifs.categoProd LIKE "PS") then 1
         when tarifs.categoProd LIKE "BB" then 2
         when tarifs.categoProd LIKE "CO" then 3
-    end 
-    
-    -- Nouvelle version trois tables
+    end -- Nouvelle version trois tables
 select
     prixLocation,
     libDuree,
@@ -235,10 +228,7 @@ order by
         when tarifs.categoProd LIKE "PS" then 1
         when tarifs.categoProd LIKE "BB" then 2
         when tarifs.categoProd LIKE "CO" then 3
-    end 
-    
-    
-    ---Requêtes à la con pour vérifier que tout fonctionne bien 
+    end ---Requêtes à la con pour vérifier que tout fonctionne bien 
 UPDATE
     catprod
 set
@@ -246,11 +236,28 @@ set
 where
     categoProd = 'CO';
 
-    use surfwave;
-UPDATE
+---REQUETES DE MODIFS DE TARIFS
+use surfwave;
+
+
+
+update
     tarifs
+set
+    prixLocation = 98.00
+where
+    categoProd = 'PS'
+    and codeDuree = 'H1'
+    ---2 ca marche aussi quand les chiffres sont 
+UPDATE
+        tarifs
 set
     prixLocation = '418'
 where
     categoProd = 'CO'
-    and codeDuree = 'h1'
+    and codeDuree = 'h1' 
+    ---DELETE
+   delete from tarifs where categoProd = 'BB' and codeDuree = 'H1'
+delete from tarifs where codeDuree='h1' and categoProd='BB';
+--- reparer
+INSERT INTO tarifs (codeDuree, categoProd, prixLocation) VALUES ('H1', 'PS', '10.00');

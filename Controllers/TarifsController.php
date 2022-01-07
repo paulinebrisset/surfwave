@@ -1,11 +1,15 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Models\ModelTarifs;
 
-class TarifsController extends Controller{
+class TarifsController extends Controller
+{
 
-    public function index(){
-    /*
+    public function index()
+    {
+        /*
         M : affiche un tableau affichant tous les tarifs possibles
         I : rien
         Bonus : toutes les variables que je voudrais créer ici seront accessibles depuis le include de juste en dessous
@@ -16,7 +20,7 @@ class TarifsController extends Controller{
         $instanceModelTarif = new ModelTarifs;
         //utilisation d'une méthode du Model
 
-        $tarifs=$instanceModelTarif->findAll();
+        $tarifs = $instanceModelTarif->findAll();
         /*
         Là c'est une méthode de Controller. On lui file  
         1 - le nom du fichier qui va ouvrir les résultats
@@ -24,7 +28,7 @@ class TarifsController extends Controller{
         render se chargera de générer la vue
         */
 
-        $this->render('tarifs/index',['tarifs'=>$tarifs]);
+        $this->render('tarifs/index', ['tarifs' => $tarifs]);
     }
     /**
      * M Méthode permettant d'afficher un article à partir de son slug
@@ -32,8 +36,9 @@ class TarifsController extends Controller{
      * O @return void
      */
 
-    
-     public function lire(int $id = 1){
+
+    public function lire(int $id = 1)
+    {
         // On instancie le modèle
         $instanceModel = new ModelTarifs;
 
@@ -45,8 +50,9 @@ class TarifsController extends Controller{
             $this->render('items/index',['item'=>$item]);
         */
     }
-    
-    public function afficherLaCategorie($id){
+
+    public function afficherLaCategorie($id)
+    {
         $instanceMI = new ModelTarifs;
         $catArticle = $instanceMI->findColumn('categorie', $id);
         return $catArticle['nom_categorie'];
