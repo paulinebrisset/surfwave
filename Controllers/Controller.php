@@ -21,7 +21,7 @@ abstract class Controller
         */
         for ($i = 0; $i < sizeof($tableau_vues_donnees); $i++) {
             //foreach ne fonctionne pas comme je veux car il ne met pas les sections dans l'ordre
-            if (($tableau_vues_donnees[$i][1]) != null) {
+            if (isset($tableau_vues_donnees[$i][1])) {
                 extract($tableau_vues_donnees[$i][1]);
             }
         }

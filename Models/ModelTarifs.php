@@ -74,6 +74,7 @@ ou seulement les colones à présenter au grand public
             $cle1='\''.substr($key, 2, 2).'\'';//Je les met entre guillement sinon requete ne fonctionne pas. Ici on va retourver les categoProd
             $cle2='\''.substr($key, 0,2).'\'';//le code duree
             $resultat = $this->update2FK($cle1, $cle2, $value);
+            echo('udpate tarif dans ModelTarif');
             return true;
         }
     }

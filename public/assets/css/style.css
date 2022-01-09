@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Merriweather|Merriweather+Sans');
+
 body {
    background-image: url(../img/background.jpg);
    font-family: 'Merriweather Sans', sans-serif;
@@ -11,6 +12,7 @@ section {
 section .btn {
    text-transform: uppercase;
    font-weight: bold;
+   cursor: pointer;
 }
 
 section h2 {
@@ -43,29 +45,33 @@ img {
       padding: 0;
    }
 }
+
 /*navbar+ form*/
 header {
    background-image: url(../img/backsurf.png);
    height: 1296px;
 }
 
-header nav{
-   z-index:1;
+header nav {
+   z-index: 1;
 }
 
-.navbar-dark  {
+.navbar-dark {
    background-color: rgba(52, 52, 52, 0.3);
    color: #f6c311;
    text-transform: uppercase;
    font-weight: bold;
    text-shadow: 0 1px 1px #000;
 }
-.navbar-light a, .navbar-brand a {
-      color: #f6c311;
+
+.navbar-light a,
+.navbar-brand a {
+   color: #f6c311;
 }
+
 .nav-item a {
-   color: #f6c311!important;
-   
+   color: #f6c311 !important;
+
 }
 
 .navbar-brand img {
@@ -74,10 +80,12 @@ header nav{
    padding: 0;
    width: 50px;
 }
+
 .navbar-brand {
    margin: 0;
    padding: 0;
 }
+
 .navbar form {
    margin-right: 10px;
 }
@@ -86,6 +94,7 @@ header nav{
 .btn-lg {
    background-color: #f6c311;
    border: none;
+   cursor: pointer;
 }
 
 .bloc {
@@ -119,17 +128,23 @@ header nav{
 .nav {
    font-size: 1.1em;
 }
+
 /*form*/
 .elementCache {
    display: none;
- }
+}
 
 
-/* BANNIERES PUB */
+/* OUverture */
+.ouverture {
+   margin-top: -1160px;
+}
 
 .pub {
    margin-top: -1160px;
 }
+
+/* BANNIERES PUB */
 
 .pub img {
    -webkit-box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.3);
@@ -141,6 +156,7 @@ header nav{
       background-image: none;
       height: auto;
    }
+
    .pub {
       margin-top: 10px;
    }
@@ -148,7 +164,8 @@ header nav{
 
 /* BOUTIQUE */
 
-.boutique, #formulaireConnexion{
+.boutique,
+#formulaireConnexion {
    border-color: #f6c311;
    text-align: center;
    background-color: #fff;
@@ -332,10 +349,12 @@ footer a {
    p {
       font-size: 1.2em;
    }
+
    footer {
       padding-top: 670px;
       margin-top: -670px;
    }
+
    footer .container {
       padding: 0 15px;
    }

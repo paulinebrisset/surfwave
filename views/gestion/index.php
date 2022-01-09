@@ -1,72 +1,85 @@
-<?php
-
-// use App\Controllers\GestionController;
-
-// if (isset($_POST['modifier'])) {
-//    var_dump($_POST['publie']);
-//    $instanceGestionController = new GestionController;
-// }
-
-?>
-<section class="d-none d-md-none d-xl-block">
+<section class="ouverture">
    <div class="container">
-      <div class="bloc location">
-         <h1>Vue Gestion des tarifs</h1>
-         <h2>Modifier les tarifs</h2>
-         <table class="table">
-            <thead>
-               <tr>
-                  <?php
+      <div class="bloc" id="coursdesurf">
+         <h2>Bonjour, admin</h2>
+         <div class="row">
+            <div class="col-lg-12">
+               <img src="public/assets/images/coursdesurf.jpg" alt="Cours de surf" class="img-fluid">
+            </div>
+         </div>
+         <h3>Quel voulez-vous faire? </h3>
+         <div class="row justify-content-md-center">
+            <div class="col-lg-10">
+               <div class="row">
+                  <div class="col-sm-4">
+                     <div class="card">
+                        <div class="card-body">
+                           <h4 class="card-title">Mettre à jour</h4>
+                           <p class="card-text">Mettre à jour un ou plusieurs tarifs de location de matériel</p>
+                           <form action="/gestion/modifier">
+                              <button type="submit" class="btn btn-lg">Modifier</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="card">
+                        <div class="card-body">
+                           <h4 class="card-title">Nouveau tarif</h4>
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error officia perspiciatis voluptas porro in. Soluta.</p>
 
-                  //Impression de la liste des matériels dispos (libellés)
-                  echo ('<th>Produit<br/>Temps </th>');
-                  foreach ($option as $nomColonnes) {
-                     echo ('<th>' . $nomColonnes . '</th>');
-                  }
-                  // for ($j = 0; $j < 3; $j++) {
-                  //    echo ('<th>' . $prix[$j]['libCategoProd'] . '</th>');
-                  // }
-                  echo ('<th>MAJ les tarifs</th>');
-                  ?>
-               </tr>
-            </thead>
-            <tbody>
-               <?php
-
-               echo ('<form method="post" action="">');
-               //$prix=$tableau_vues_donnees[1];
-               //impression de tous les tarifs
-               $counter = $prix[0]['libDuree']; //counter va retenir le libDuree, et changer si on est arrivé "au bout" d'un libDuree
-               echo ('<tr>');
-               echo ('<td>' . $prix[0]['libDuree'] . '</td>'); // Initialisation avec la première cellule, qui doit afficher "1 heure"
-
-               foreach ($prix as $location) {
-                  //if/else doit déterminer si on complète une ligne commencée ou si on doit créer une nouvelle ligne dans le tableau
-
-                  //tant qu'on parle toujours de la même durée de location = comparaison de deux chaînes de caractères
-                  if (strcmp($location['libDuree'], $counter) == 0) {
-                     echo ('<td>
-                            <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" method="post" placeholder="' . $location['prixLocation'] . '">                        </td>');
-                  } else {
-                     //changement de duree de location
-                     $counter = $location['libDuree'];
-                     echo ('<td>
-                    <button type="submit" class="btn btn-outline-danger">ModifieR
-                        </td>');
-                     echo ('</tr><tr>');
-                     echo ('<td>' . $location['libDuree'] . '</td>');
-                     echo ('<td>
-                     <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" method="post" placeholder="' . $location['prixLocation'] . '">                 </td>');
-                  }
-               }
-               echo ('<td>
-                            <input type="submit" class="btn btn-outline-danger" value="Modifier">
-                        </td>');
-               echo ('</tr>');
-               echo ('</form>');
-               ?>
-            </tbody>
-         </table>
+                           <form action="/gestion/creer">
+                              <button type="submit" class="btn btn-lg">Nouveau</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="card">
+                        <div class="card-body">
+                           <h4 class="card-title">Supprimer</h4>
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ea, neque quasi suscipit consectetur.</p>
+                           <form action="/gestion/supprimer">
+                              <button type="submit" class="btn btn-lg">Supprimer</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-4">
+                     <div class="card">
+                        <div class="card-body">
+                           <h4 class="card-title">Familles</h4>
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus eaque, consectetur alias libero laudantium illum.</p>
+                           <p class="prix">à partir de 50 €</p>
+                           <button class="btn btn-lg">Réserver</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="card">
+                        <div class="card-body">
+                           <h4 class="card-title">Week-End</h4>
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis omnis placeat, quis consequuntur.</p>
+                           <p class="prix">à partir de 50 €</p>
+                           <button class="btn btn-lg">Réserver</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="card">
+                        <div class="card-body">
+                           <h4 class="card-title">Vacances</h4>
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum sint, architecto, numquam unde similique.</p>
+                           <p class="prix">à partir de 50 €</p>
+                           <button class="btn btn-lg">Réserver</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
 </section>

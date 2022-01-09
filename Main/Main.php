@@ -31,7 +31,23 @@ class Main
         if (!isset($_SESSION)) {
             session_start();
         }
+        /* par défaut, on considère que la personne n'a pas rentré de mdp incorrect*/
+        if (!isset($_SESSION['erreurMdp'])) {
+            $_SESSION['erreurMdp'] = false;
+        }
+        /***Est-ce que utilisateur logué et admin? */
+        //TODO : controle de saisie
 
+        if (isset($_POST['logemail'])) {
+            $instanceLoginController = new LoginController;
+            $instanceLoginController->verifierUtilisateur($_POST['logemail'], $_POST['logmdp']);
+        }
+        //on affiche déconnexion si la personne est loguée, connection si la personne ne l'est pas
+        if (isset($_POST['deconnexion'])) {
+            $instanceLoginController = new LoginController;
+            $instanceLoginController->deconnexion();
+            //TODO : redirection vers la page principale
+        }
         /*******NETTOYAGE D'URL ET ON EVITE LE DUPLICATE CONTENT ***********/
 
         //On va retirer le "trailing slash" éventuel de l'Url
@@ -46,7 +62,7 @@ class Main
 
         if (!empty($uri) && $uri != '/' && $uri[-1] === '/') { //il y a quand même un slash systématique à la fin paraît-il, au moins sur la page d'accueil
             // Dans ce cas on enlève le /
-       
+
             $uri = substr($uri, 0, -1);
 
             // On envoie un code de redirection permanente pour ne pas avoir la page en double
@@ -65,14 +81,14 @@ class Main
         explode -> contraire de implode
         */
         $params = [];
-        
+
         if (isset($_GET['p'])) {
             $params = explode('/', $_GET['p']);
         }
 
         // On vérifie si on a au moins un paramètre (donc si il y en a un dans $params[0])
         if ($params[0] != "") {
-         
+
             /*
         PARAM 1    
             Le 1er param va correspondre au nom du controller, mais il va falloir refabriquer l'adresse du ficihier (avec le namespace)
@@ -80,22 +96,27 @@ class Main
             + ajout du namespace des controleurs, et "Controller" à la fin de "l'adresse"
             Ex : pour monsite/bidule en url ; on veut qu'il aille chercher App\Controller\BiduleController
         */
+            /*******CONTROLE SECU *******/
 
-        // Je contrôle si l'utilisateur est admin avant de continuer. Toutes les fonctions de cette classe renvoient vers des pages destinées exclusivement à l'admin
-            // if (strcasecmp($params[0],'gestion')==0) { //strcasecmp pour ignorer la casse
-            //     $instanceLoginController = new LoginController;
-            //     if ($instanceLoginController->isTheUserAnAdmin() == false) {
-            //         http_response_code(404);
-            //         $instanceLoginController->render('404');
-            //         exit;
-            //     }
-            // } 
+            //Si le controller appelé doit être GestionController, je vérifie que l'utilisateur
+            //est logué et admin avant de continuer
+
+            if (strcasecmp($params[0], 'gestion') == 0) { //strcasecmp pour ignorer la casse
+                $instanceLoginController = new LoginController;
+                if ($instanceLoginController->isTheUserAnAdmin() == false) {
+                    http_response_code(404);
+                    $tableau_vues_donnees[] = ['includes/404', []];
+                    $instanceLoginController->render($tableau_vues_donnees, 'default');
+                    exit;
+                }
+            }
+            /******FIN DES CONTROLES PRINCIPAUX */
 
             $controller = '\\App\\Controllers\\' . ucfirst(array_shift($params)) . 'Controller'; //array_shift enlève la première valeur d'un tableau
             // On instancie le contrôleur
             $controller = new $controller();
 
-        /* 
+            /* 
         PARAM 2
             On sauvegarde le 2ème paramètre dans $action 
             si on a un param, c'est une méthode qu'on utilise -> soit elle existe, soit 404
@@ -122,7 +143,7 @@ class Main
                     on envoie le code réponse 404
                 */
                 http_response_code(404);
-                $instanceLogController = new LoginController; 
+                $instanceLogController = new LoginController;
                 $instanceLogController->render('404');
                 exit;
             }

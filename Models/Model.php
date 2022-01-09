@@ -66,6 +66,7 @@ class Model extends Database
     O : Tableau des enregistrements trouvés
     I: rien
     UTILISE PAR : La fonction index() de TarifsController via une instance de ModelTarif
+    + pour l'affichage des membres d'équipe
 */
 
     public function findAll(string $condition = null)
@@ -98,29 +99,31 @@ O : return array Tableau des enregistrements trouvés
 I: array $criteres Tableau de critères
 */
 
-    // public function findBy(array $criteres, string $condition = null)
-    // {
-    //     $champs = [];
-    //     $valeurs = [];
+    public function findBy(array $criteres, string $condition = null)//Je m'en sers pour check le user 
+    {
+        $champs = [];
+        $valeurs = [];
 
-    //     // On boucle pour récupérer les paramètres de la requête et séparer les noms de champs des valeurs
-    //     foreach ($criteres as $champ => $valeur) {
+        // On boucle pour récupérer les paramètres de la requête et séparer les noms de champs des valeurs
+        foreach ($criteres as $champ => $valeur) {
 
-    //         $champs[] = "$champ = ?";
-    //         $valeurs[] = $valeur;
-    //     }
+            $champs[] = "$champ = ?";
+            $valeurs[] = $valeur;
+        }
 
-    //     /*implode : méthode php qui rassemble les éléments d'un tableau en une chaîne
-    //         On transforme le tableau "champs" en chaîne de caractères séparée par des AND si il y a plusieurs champs à sélectionner
-    //         (le premier argument de implode, ici 'AND', est un séparateur qui est utilisé que si il  y a plusieurs éléments dans le tableau)
-    //    */
-    //     $liste_champs = implode(' AND ', $champs);
-    //     $liste_champs .= (' ' . $condition);
-
-    //     // On exécute la requête
-    //     $query = $this->executerRequete('SELECT * FROM ' . $this->table . ' WHERE ' . $liste_champs . ' ' . $valeurs);
-    //     return $query->fetchAll();
-    // }
+        /*implode : méthode php qui rassemble les éléments d'un tableau en une chaîne
+            On transforme le tableau "champs" en chaîne de caractères séparée par des AND si il y a plusieurs champs à sélectionner
+            (le premier argument de implode, ici 'AND', est un séparateur qui est utilisé que si il  y a plusieurs éléments dans le tableau)
+       */
+        $liste_champs = implode(' AND ', $champs);
+        $liste_champs .= (' ' . $condition);
+var_dump ($liste_champs);
+var_dump($valeurs);
+        // On exécute la requête
+        $query = $this->executerRequete('SELECT * FROM ' . $this->table . ' WHERE ' . $liste_champs . ' ',$valeurs);
+        var_dump($query);
+        return $query->fetchAll();
+    }
 
     //n'importe quelle requete envoyée par une instance
 

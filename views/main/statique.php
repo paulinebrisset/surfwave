@@ -1,5 +1,6 @@
    <!-- BANNIERES PUB -->
-
+<?php
+?>
    <section class="pub">
       <div class="container">
          <div class="row">
@@ -17,21 +18,20 @@
    </section>
    <!--FORMULAIRE DE LOGIN -->
    <section class="container elementCache" id="formulaireConnexion">
-      <form id="formConnexion">
+      <form id="formConnexion" method="post" action="">
          <div class="row">
-         <div class="form-group col">
-           <label for="email">Adresse mail</label>
-           <input type="email" class="form-control" required="required" id="email" aria-describedby="emailHelp" placeholder="Votre mail">
-           <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div class="form-group col">
+               <label for="logemail">Adresse mail</label>
+               <input type="email" class="form-control" required="required" id="logemail" name="logemail" aria-describedby="emailHelp" placeholder="Votre mail">
+               <small id="emailHelp" class="form-text text-muted"><?php if ($_SESSION['erreurMdp']==false){ echo ("We'll never share your email with anyone else"); } else{ echo ("Problème d'authentification, veuillez retenter");};?></small>
+            </div>
+            <div class="form-group col">
+               <label for="logmdp">Mot de passe</label>
+               <input type="password" class="form-control" required="required" id='logmdp' name="logmdp" placeholder="Mot de passe">
+            </div>
          </div>
-         <div class="form-group col">
-           <label for="mdp">Mot de passe</label>
-           <input type="password" class="form-control" required="required" id="mdp" placeholder="Mot de passe">
-         </div>
-      </div>
-         <button type="sumbit" class="btn btn-primary" id="btnConnexion">Se connecter</button>
-      
-       </form>
+         <button type="submit" class="btn btn-primary" id="btnConnexion">Se connecter</button>
+      </form>
    </section>
 
    <!-- BOUTIQUE -->
@@ -88,7 +88,8 @@
             <h2>Cours de surf</h2>
             <div class="row">
                <div class="col-lg-6">
-                  <img src="public/assets/images/coursdesurf.jpg" alt="Cours de surf" class="img-fluid"></div>
+                  <img src="public/assets/images/coursdesurf.jpg" alt="Cours de surf" class="img-fluid">
+               </div>
                <div class="col-lg-6">
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur optio perspiciatis, aperiam eligendi sapiente quo in neque magnam earum quaerat, dolorem aspernatur maiores iusto laboriosam blanditiis fugiat vero obcaecati ab eum! Voluptates optio consequuntur earum mollitia corrupti totam quibusdam quod laboriosam quo soluta dolorum inventore, quas tenetur, ad magnam dolore.</p>
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus reiciendis architecto quia, quis repellat vero labore natus doloremque neque consequuntur!</p>
