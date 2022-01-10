@@ -10,6 +10,7 @@ namespace App\Main;
 use App\Controllers;
 use App\Controllers\Controller;
 use App\Controllers\LoginController;
+use App\Controllers\MainController;
 
 class Main
 {
@@ -25,12 +26,8 @@ class Main
         avec detail : méthode dans le controller, 
         et parametre : paramètre éventuel passé à la méthode précédemment lue
 */
-
-    public function start()
+    private function gererLaConnexion()
     {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
         /* par défaut, on considère que la personne n'a pas rentré de mdp incorrect*/
         if (!isset($_SESSION['erreurMdp'])) {
             $_SESSION['erreurMdp'] = false;
@@ -48,6 +45,15 @@ class Main
             $instanceLoginController->deconnexion();
             //TODO : redirection vers la page principale
         }
+    }
+
+    public function start()
+    {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $this->gererLaConnexion();
+
         /*******NETTOYAGE D'URL ET ON EVITE LE DUPLICATE CONTENT ***********/
 
         //On va retirer le "trailing slash" éventuel de l'Url
@@ -90,13 +96,27 @@ class Main
         if ($params[0] != "") {
 
             /*
-        PARAM 1    
-            Le 1er param va correspondre au nom du controller, mais il va falloir refabriquer l'adresse du ficihier (avec le namespace)
-            On sauvegarde le 1er paramètre dans $controller en mettant sa 1ère lettre en majuscule
-            + ajout du namespace des controleurs, et "Controller" à la fin de "l'adresse"
-            Ex : pour monsite/bidule en url ; on veut qu'il aille chercher App\Controller\BiduleController
-        */
+            PARAM 1    
+                Le 1er param va correspondre au nom du controller, mais il va falloir refabriquer l'adresse du ficihier (avec le namespace)
+                On sauvegarde le 1er paramètre dans $controller en mettant sa 1ère lettre en majuscule
+                + ajout du namespace des controleurs, et "Controller" à la fin de "l'adresse"
+                Ex : pour monsite/bidule en url ; on veut qu'il aille chercher App\Controller\BiduleController
+            */
             /*******CONTROLE SECU *******/
+            /*
+            $instanceController = new Controller;
+            $liste = $instanceController->get_liste_controllers();
+            $comparaison = false;
+
+            
+            foreach ($liste as $nomController){
+                 if (strcmp($nomController, ($params[0]))==0);
+                 $comparaison=true;
+                echo("Je passe dans le tableau");
+             }
+
+            // if ( $comparaison==true){
+                */
 
             //Si le controller appelé doit être GestionController, je vérifie que l'utilisateur
             //est logué et admin avant de continuer
@@ -104,10 +124,7 @@ class Main
             if (strcasecmp($params[0], 'gestion') == 0) { //strcasecmp pour ignorer la casse
                 $instanceLoginController = new LoginController;
                 if ($instanceLoginController->isTheUserAnAdmin() == false) {
-                    http_response_code(404);
-                    $tableau_vues_donnees[] = ['includes/404', []];
-                    $instanceLoginController->render($tableau_vues_donnees, 'default');
-                    exit;
+                    $this->renvoyerVers404();
                 }
             }
             /******FIN DES CONTROLES PRINCIPAUX */
@@ -117,45 +134,52 @@ class Main
             $controller = new $controller();
 
             /* 
-        PARAM 2
-            On sauvegarde le 2ème paramètre dans $action 
-            si on a un param, c'est une méthode qu'on utilise -> soit elle existe, soit 404
-            si pas de param, on utilise la méthode index
-        */
+                PARAM 2
+                    On sauvegarde le 2ème paramètre dans $action 
+                    si on a un param, c'est une méthode qu'on utilise -> soit elle existe, soit 404
+                    si pas de param, on utilise la méthode index
+                */
             $action = isset($params[0]) ? array_shift($params) : 'index';
 
             if (method_exists($controller, $action)) {
                 /* 
-                Si il reste des paramètres : 
-                on appelle la méthode en envoyant les paramètres 
-                sinon on l'appelle "à vide"
-            */
+                        Si il reste des paramètres : 
+                        on appelle la méthode en envoyant les paramètres 
+                        sinon on l'appelle "à vide"
+                    */
 
                 /*    
-                ancienne version :  (isset($params[0])) ? $controller->$action($params) : $controller->$action();
-                cela permettait de passer des paramètres complémentaires sous forme de un tableau
-                maintenant -> on veut un entier directement. call_user_func_array permet de faire la conversion
-            */
+                        ancienne version :  (isset($params[0])) ? $controller->$action($params) : $controller->$action();
+                        cela permettait de passer des paramètres complémentaires sous forme de un tableau
+                        maintenant -> on veut un entier directement. call_user_func_array permet de faire la conversion
+                    */
                 (isset($params[0])) ? call_user_func_array([$controller, $action], $params) : $controller->$action();
             } else {
-                /*
-                    si il y a un param de méthode mais que cette méthode n'existe pas, 
-                    on envoie le code réponse 404
-                */
-                http_response_code(404);
-                $instanceLogController = new LoginController;
-                $instanceLogController->render('404');
-                exit;
+                $this->renvoyerVers404();
             }
         } else {
             /*
-            Si  pas de paramètre, afficher la page d'accueil
-            On instancie le contrôleur par défaut (page d'accueil)
-            */
+                Si  pas de paramètre, afficher la page d'accueil
+                On instancie le contrôleur par défaut (page d'accueil)
+                */
             $controller = new Controllers\MainController();
 
             // On appelle la méthode index
             $controller->index();
         }
+    }
+
+    public function renvoyerVers404()
+    {
+        /*
+        si la classe n'existe pas, ou 
+        si il y a un param de méthode mais que cette méthode n'existe pas, 
+        on envoie le code réponse 404
+    */
+        http_response_code(404);
+        $instanceMainController = new MainController;
+        $tableau_vues_donnees[] = ['includes/404', []];
+        $instanceMainController->render($tableau_vues_donnees, 'default');
+        exit;
     }
 }

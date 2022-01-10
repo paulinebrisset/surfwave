@@ -62,25 +62,62 @@ class GestionController extends Controller
         $prixAChanger = [];
         $controle = false;
         //Il ne passe pas dans le foreach si $prix est vide
+        //TODO a changer pour en faire plusueyrs d'un coup
         foreach ($prix as $tarif) {
             $cle = ($tarif['codeDuree'] . $tarif['categoProd']);
-            if (isset($_POST[$cle]) and ($_POST[$cle]) != null) {
+            if (isset($_POST[$cle]) && ($_POST[$cle] != '')) {
                 $prixAChanger[$cle] = ($_POST[$cle]);
-                $instanceModelTarif = new ModelTarifs;
-                $controle = $instanceModelTarif->updateTarif($prixAChanger); //ne s'exécute pas si le tableau est vide               
             }
         }
+        $instanceModelTarif = new ModelTarifs;
+        $controle = $instanceModelTarif->updateTarif($prixAChanger); //controle vaut null si le tableau est vide et true si il y a eu une requête
         return $controle; //false si aucune donnee n'a été changée, true si on a fait un update
     }
 
     public function supprimer()
     {
+        //verifier si il y a déjà eu un essai de suppression de prix
+        if (isset($_POST['duree']) && isset($_POST['categoprod'])) {
+            $instanceModelTarif = new ModelTarifs;
+            $instanceModelTarif->delete2FK([$_POST['categoprod'], $_POST['duree']]);
+            header('Location: /gestion');
+            exit;
+        }
+        //Lancement de la page 
         $instanceModelCatProd = new ModelCatprod;
         $categoprod = $instanceModelCatProd->findAll();
         $instanceDuree = new ModelDuree;
         $duree = $instanceDuree->findAll();
-        $tableau_vues_donnees[] = ['gestion/supprimer', ['data'=>['categoprod' => $categoprod],['duree'=>$duree]]];
 
+        $tableau_vues_donnees[] = ['gestion/supprimer', ['categoprod' => $categoprod]];
+        $tableau_vues_donnees[] = ['gestion/supprimer', ['duree' => $duree]];
+
+        $this->render($tableau_vues_donnees);
+    }
+    public function nouveau()
+    {
+
+        //Lancement de la page 
+        $instanceModelTarif = new ModelTarifs;
+        $tarifsManquants = $instanceModelTarif->trouverLesTarifsManquants();
+        $creation = false;
+        //Je vérifie si l'un des tarifs manquants a été mis à jour
+        foreach ($tarifsManquants as $tarifManquant) {
+            $concat = $tarifManquant['codeDuree'] . $tarifManquant['categoProd'];
+            if (isset($_POST[$concat]) && $_POST[$concat] != '') {
+                $instanceModelTarif = new ModelTarifs;
+                /**Je crée un tableau id=>valeur */
+                $nouveauxTarifs[$concat] = $_POST[$concat];
+                $creation = true;
+            }
+        }
+        if ($creation == true) {
+            $instanceModelTarif->creerTarif($nouveauxTarifs);
+            header('Location: /gestion');
+            exit;
+        }
+
+        $tableau_vues_donnees[] = ['gestion/nouveau', ['tarifsManquants' => $tarifsManquants]];
         $this->render($tableau_vues_donnees);
     }
     /****Affiche d'article à modifier */

@@ -31,6 +31,10 @@ class Model extends Database
     {
         return $this->first_id;
     }
+    public function get_second_id()
+    {
+        return $this->second_id;
+    }
     public function get_columnToGetPrinted()
     {
         return $this->columnToGetPrinted;
@@ -99,7 +103,7 @@ O : return array Tableau des enregistrements trouvés
 I: array $criteres Tableau de critères
 */
 
-    public function findBy(array $criteres, string $condition = null)//Je m'en sers pour check le user 
+    public function findBy(array $criteres, string $condition = null) //Je m'en sers pour check le user 
     {
         $champs = [];
         $valeurs = [];
@@ -117,17 +121,14 @@ I: array $criteres Tableau de critères
        */
         $liste_champs = implode(' AND ', $champs);
         $liste_champs .= (' ' . $condition);
-var_dump ($liste_champs);
-var_dump($valeurs);
         // On exécute la requête
-        $query = $this->executerRequete('SELECT * FROM ' . $this->table . ' WHERE ' . $liste_champs . ' ',$valeurs);
-        var_dump($query);
+        $query = $this->executerRequete('SELECT * FROM ' . $this->table . ' WHERE ' . $liste_champs . ' ', $valeurs);
         return $query->fetchAll();
     }
 
     //n'importe quelle requete envoyée par une instance
 
-    public function findBy2FK(model $tableAnnexe1, model $tableAnnexe2, string $condition, bool $toutesColonnes)
+    public function findBy2FK(model $tableAnnexe1, model $tableAnnexe2, string $condition = null, bool $toutesColonnes)
     {
         /*Gros assemblage
             Pour chaque model(=table), dont le model qui appelle la fonction, on va aller chercher
@@ -171,6 +172,45 @@ var_dump($valeurs);
     }
 
 
+
+    public function findMissing2FK(model $tableAnnexe1, model $tableAnnexe2, string $condition = null)
+    {
+        /*La requete que cela va créer pour la table tarifs 
+            SELECT codeDuree,categoProd, libDuree, libcategoProd
+            from duree 
+            inner join catProd
+            where concat(codeDuree, categoprod) not in 
+               ( SELECT concat(tarifs.codeDuree, tarifs.categoprod) as con 
+                from tarifs))
+    */
+    
+        $table1 = $tableAnnexe1->get_tableName();
+        $cle1 = $tableAnnexe1->get_first_id();
+
+        $table2 = $tableAnnexe2->get_tableName();
+        $cle2 = $tableAnnexe2->get_first_id();
+
+
+        //$this se réfère au model appelant 
+        $tablePrincipale = $this->get_tableName();
+
+        /***fabrication de la sous-requete ****/
+        $sousRequete = ' ( Select concat( ' . $tablePrincipale . '.' . $cle1 . ',' . $tablePrincipale . '.' . $cle2 . ')';
+        $sousRequete .= ' from ' . $tablePrincipale.' )';
+
+        /****Requete principale */
+        $requete = ' Select * ';
+        $requete .= ' from ' . $table1;
+        $requete .= ' inner join ' . $table2;
+        $requete .= ' where concat(' . $cle1 . ',' . $cle2 . ') not in ';
+        $requete .=$sousRequete;
+
+        //J'utilise executerRequete qui est une méthode de Model pour aller chercher les donnée
+        $request = $this->executerRequete($requete);
+        return $request->fetchAll();
+    }
+
+
     //trouver le nom de la catégorie correspondant à un item
     /*INUTILE : NE MARCHAIT QUE DANS LES CAS OU POUR TABLE LA PK EST ID_TABLE ET ID EST INT*/
     public function findColumn(string $column, string $secondeTable, $id, $condition = null)
@@ -191,14 +231,13 @@ var_dump($valeurs);
 
     /*********************PARTIE CREATE DES DONNEES *********************/
 
-    public function creer(array $model)
+    public function creer(array $tableau)
     {
         $champs = [];
         $valeurs = [];
         $liste_valeurs = '\''; //pour mettre toutes les insertions entre quotes
-
         // On réorganise le tableau des paramètres pour l'exploiter
-        foreach ($model as $champ => $valeur) {
+        foreach ($tableau as $champ => $valeur) {
             // UPDATEpro annonces SET titre = ?, description = ?, actif = ? WHERE id= ?
             if ($valeur !== null && $champ != 'db' && $champ != 'table') {
                 $champs[] = "$champ";
@@ -215,7 +254,8 @@ var_dump($valeurs);
         $preRequete = ('INSERT INTO ' . $this->table . ' (' . $liste_champs . ') VALUES (' . $liste_valeurs . ') ');
         return $this->executerRequete($preRequete);
     }
-      /*********************PARTIE UPDATE DES DONNEES *********************/
+
+    /*********************PARTIE UPDATE DES DONNEES *********************/
     /*
 M : Mise à jour d'un enregistrement suivant un tableau de données
 O : booléen (requête éxécutée ou non)
@@ -231,17 +271,17 @@ donneesDeMonItemModifie = [
 
 */
 
-  /*
+    /*
   update de la valeur d'un champ d'une table dont la clé primaire est composée de deux clé étrangères
 renvoie probablement un booléen (pas tableau en tout cas, pas de fetch)
   */
-  public function update2FK($cle1, $cle2, $value)
-  {
-      $requete = ('update ' . $this->table . ' set ' . $this->columnToGetPrinted . ' = ' . $value);
-      $requete .= (' where ' . $this->first_id . ' = ' . $cle1 . ' and ' . $this->second_id . ' = ' . $cle2);
-      // On exécute la requête
-      return  $this->executerRequete($requete);
-  }
+    public function update2FK($cle1, $cle2, $value)
+    {
+        $requete = ('update ' . $this->table . ' set ' . $this->columnToGetPrinted . ' = ' . $value);
+        $requete .= (' where ' . $this->first_id . ' = ' . $cle1 . ' and ' . $this->second_id . ' = ' . $cle2);
+        // On exécute la requête
+        return  $this->executerRequete($requete);
+    }
 
     public function update(int $id, array $criteres)
     {
@@ -275,9 +315,22 @@ O : bool
 I : int $id id de l'enregistrement à supprimer
 exemple d'utilisation $machin->delete(6);
 */
-    public function delete(int $id)
+    public function delete(array $criteres)
     {
-        return $this->executerRequete("DELETE FROM " . $this->table . " WHERE id = ?", [$id]);
+        foreach ($criteres as $champ => $valeur) {
+            $champs[] = "$champ = ?";
+            $valeurs[] = $valeur;
+        }
+        return $this->executerRequete("DELETE FROM " . $this->table . " WHERE " . $champs, $valeurs);
+    }
+    /***
+     * Supprimer une valeur dans une table où une clé primaire est composée de deux clés étrangères
+     * Il faut donc envoyer la data dans l'ordre first id/second id
+     */
+    public function delete2FK(array $valeurs)
+    {
+        $champs = ($this->first_id . ' = ? and ' . $this->second_id . ' =?');
+        return $this->executerRequete("DELETE FROM " . $this->table . " WHERE " . $champs, $valeurs);
     }
     /*********************PARTIE HYDRATATION = CREATE*********************/
 

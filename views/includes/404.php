@@ -1,4 +1,4 @@
-<section class='first'>
+<section class="ouverture">
     <div class="container">
         <div class="bloc">
             <h2>Erreur 404</h2>

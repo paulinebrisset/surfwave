@@ -43,7 +43,11 @@ class LoginController extends Controller
 
         // destroy the session
         session_destroy();
-        header('Location: /');
+
+        $instanceMainController = new MainController;
+        $instanceMainController->index();
+        //TODO probleme d'url qui reste sur /gestion après la relocalisation
+        exit;
     }
     /*********** GESTION DE LA NAVBAR *********/
 

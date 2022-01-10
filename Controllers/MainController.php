@@ -23,8 +23,9 @@ class MainController extends Controller
 
     public function index()
     {
+        /********premiers parametrages **** */
         $tableau_vues_donnees = $this->get_tableau_vues_donnees();
-        //on va pécho les tarifs
+
         /*****PARTIE DYNAMIQUE 1 : LES TARIFS */
         $instanceTarifs = new ModelTarifs;
 
@@ -33,15 +34,17 @@ class MainController extends Controller
 
         $tarifs = $instanceTarifs->getTarificationData(false);
         /*Je vais chercher séparérement le libellés des catégories de produits, sinon l'affichage plante 
-dans le cas où l'un des tarifs à afficher sur la première ligne est delete
-*/
+            dans le cas où l'un des tarifs à afficher sur la première ligne est delete
+        */
 
         $tableau_vues_donnees[1] = (['tarifs/index', ['tarifs' => $tarifs]]);
 
         $instanceModelCatProd = new ModelCatprod;
         $option['libTarifs'] = $instanceModelCatProd->get_lib_values();
+
+        /******PARTIE DYNAMIQUE 2 : les équipiers */
         /* ensuite je prépare un tableau à envoyer à Controller, il contient toutes les
-vues à afficher sur la page d'accueil*/
+            vues à afficher sur la page d'accueil*/
 
         /*****PARTIE DYNAMIQUE 2 : EQUIPE */
         $instanceModelEquipe = new ModelEquipe;
