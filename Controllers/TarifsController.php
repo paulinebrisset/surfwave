@@ -1,35 +1,28 @@
 <?php
 
 namespace App\Controllers;
-
+use App\Models\ModelCatprod;
 use App\Models\ModelTarifs;
 
 class TarifsController extends Controller
 {
-
+/* file tout ce dont il y a besoin pour afficher l'index de tarifs*/
     public function index()
     {
-        /*
-        M : affiche un tableau affichant tous les tarifs possibles
-        I : rien
-        Bonus : toutes les variables que je voudrais créer ici seront accessibles depuis le include de juste en dessous
-        include_once ROOT.'/views/items/index.php';
-    */
+        $instanceTarifs = new ModelTarifs;
+              
+        //J'utilise une méthode de ModelTarifs pour aller récupérer tous les tarifs
+        //Cette méthode préparera la requête et la fera excécuter via des méthode de Model et de Database
 
-        //instancier la classe ModelTarifs
-        $instanceModelTarif = new ModelTarifs;
-        //utilisation d'une méthode du Model
-
-        $tarifs = $instanceModelTarif->findAll();
-        /*
-        Là c'est une méthode de Controller. On lui file  
-        1 - le nom du fichier qui va ouvrir les résultats
-        et 2- la varibale qui contient la requête qui contient les données que l'on veut afficher
-        render se chargera de générer la vue
+        $tarifs = $instanceTarifs->getTarificationData(false);
+                /*Je vais chercher séparérement le libellés des catégories de produits, sinon l'affichage plante 
+        dans le cas où l'un des tarifs à afficher sur la première ligne est delete
         */
 
-        $this->render('tarifs/index', ['tarifs' => $tarifs]);
+       $vueTarifs[]= (['tarifs/index', ['tarifs' => $tarifs]]);
+       $this->render($vueTarifs);
     }
+
     /**
      * M Méthode permettant d'afficher un article à partir de son slug
      * I @param int $id

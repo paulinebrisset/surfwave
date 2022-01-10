@@ -12,9 +12,8 @@ function afficherFormConnexion() {
 };
 
 var btnConnexion = document.getElementById("btnConnexion");
-btnConnexion.addEventListener("click", securiserLaSaisie);
+//btnConnexion.addEventListener("click", ontroleDeSaisie);
 //TODO
-function securiserLaSaisie() {
-        document.forms["formConnexion"].submit(); 
-    
-};
+// function controleDeSaisie() {
+//         document.forms["formConnexion"].submit(); 
+// };

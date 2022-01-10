@@ -44,5 +44,3 @@ class Database extends PDO{
     }
     //Pour avoir une instance, il suffira de faire un Database::getinstance()
 }
-
-?>

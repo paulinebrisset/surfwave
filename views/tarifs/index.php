@@ -19,7 +19,7 @@
                   <?php
                   //Impression de la liste des matériels dispos (libellés)
                   echo ('<th>Tarifs location</th>');
-                  foreach ($option as $nomColonnes) {
+                  foreach ($option['libTarifs'] as $nomColonnes) {
                      echo ('<th>' . $nomColonnes . '</th>');
                   } ?>
                </tr>

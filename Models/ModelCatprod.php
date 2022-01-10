@@ -27,9 +27,8 @@ class ModelCatprod extends Model
     retourne un string avec une condition prête à l'emploi pour la table qui l'appelle, 
     seulement "tarif" pour le moment
     */
-    //bref les deux fonctions en dessous ne sont pas satisfaisantes du tout parce qu'elles ne sont pas otpimisées
 
-    public function get_conditionCatProd($table) // IL FAUDRAIT LA METTRE EN PRIVATE MAIS JE N Y ARRIVE PAS
+    public function get_conditionCatProd($table) // ModelTarifs l'utilise aussi
     {
         $tableauIdsCatProd = $this->id_values;
         $condition = 'case ';
@@ -40,14 +39,13 @@ class ModelCatprod extends Model
         return $condition;
     }
 
-    //TODO A AMELIORER PARCE QUE LA IL S instancie tout seul pour faire des trucs, bref c'est le bazar
+/* récupère tous les libellés de produits à vendre
+en fonction de l'ordre définit dans le tableau de la classe*/
     public function get_lib_values()
-    {
-        $instanceCatProd = new ModelCatprod;
-
+    {     
         $condition = ' order by ';
-        $condition .= $instanceCatProd->get_conditionCatProd($instanceCatProd->get_tableName());
-        $libellesColonnes = $instanceCatProd->findAll($condition);
+        $condition .= $this->get_conditionCatProd($this->get_tableName()); //$this = ModelCatProd
+        $libellesColonnes = $this->findAll($condition);
         foreach ($libellesColonnes as $nomCat) {
             $option[] = $nomCat['libcategoProd'];
         }

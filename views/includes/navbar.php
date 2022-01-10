@@ -22,11 +22,28 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
+                <?php
+                if (isset($_SESSION['utilisateur'])) {
+                ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gestion">Gestion</a>
+                    </li>
+                <?php
+                }
+                ?>
             </ul>
             <form class="form-inline my-2 my-md-0">
                 <input class="form-control" type="text" placeholder="Recherche" aria-label="Search">
             </form>
-            <button type="button" class="btn" id="ouvertureFenetreConnexion">Connexion</button>
+            <?php
+            if (!(isset($_SESSION['utilisateur']))) {
+                echo ('<button type="button" class="btn" id="ouvertureFenetreConnexion">Connexion</button>');
+            } else {
+                echo ('<form method="post" action="">
+                <button type="submit" class="btn" name="deconnexion">Déconnexion</button>
+          </form>');
+            }
+            ?>
         </div>
     </div>
 </nav>

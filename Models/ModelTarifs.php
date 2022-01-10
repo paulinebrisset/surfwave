@@ -17,11 +17,6 @@ class ModelTarifs extends Model
         $this->second_id = 'codeDuree';
         $this->columnToGetPrinted='prixLocation';
     }
-
-    public function get_columnToGetPrinted()
-    {
-        return $this->columnToGetPrinted;
-    }
     
 /*
 renvoie tous les tarifs dans l'ordre de la durée la plus courte à la plus longue, 
@@ -32,11 +27,10 @@ ou seulement les colones à présenter au grand public
 */
     public function getTarificationData(bool $param)
     {
-        $instanceTarifs = new ModelTarifs;
         $instanceDuree = new ModelDuree;
         $instanceCatprod = new ModelCatprod;
 
-        $nomTablePrincipale = $instanceTarifs->get_tableName(); /*je récupère le nom de la table qui contient les tarifs*/
+        $nomTablePrincipale = $this->get_tableName(); /*je récupère le nom de la table qui contient les tarifs*/
 
         // Là je vais écrire la condition. Je veux récupérer la phrase suivante : 
 
@@ -73,8 +67,31 @@ ou seulement les colones à présenter au grand public
         foreach ($prixAChanger as $key=>$value){
             $cle1='\''.substr($key, 2, 2).'\'';//Je les met entre guillement sinon requete ne fonctionne pas. Ici on va retourver les categoProd
             $cle2='\''.substr($key, 0,2).'\'';//le code duree
-            $resultat = $this->update2FK($cle1, $cle2, $value);
+            return $this->update2FK($cle1, $cle2, $value); //contient un tableau associatif avec la requete dedans quand ok
             return true;
         }
+    }
+    /*********CREATE **** */
+    public function creerTarif(array $nouveauxTarifs){ //[$concat=>$_POST[$concat]];
+        
+        foreach ($nouveauxTarifs as $key=>$value){
+            var_dump($nouveauxTarifs);
+            $cle1=substr($key, 2, 2);//Je les met entre guillement sinon requete ne fonctionne pas. Ici le code categoprod
+           
+           
+            echo($cle1);
+            $cle2=substr($key, 0,2);//le code duree
+
+            $values [$this->get_first_id()]= $cle1;
+            $values [$this->get_second_id()] = $cle2;
+            $values [$this->get_columnToGetPrinted()]=$value;
+            $resultat = $this->creer($values);
+            return $resultat;
+        }
+    }
+    public function trouverLesTarifsManquants(){
+        $instanceDuree = new ModelDuree;
+        $instanceCatprod = new ModelCatprod;
+        return $this->findMissing2FK($instanceDuree, $instanceCatprod);
     }
 }
