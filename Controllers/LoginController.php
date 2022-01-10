@@ -7,7 +7,9 @@ use App\Models\ModelUtilisateurs;
 class LoginController extends Controller
 {
 
-
+    /***Vérifie si l'utilisateur qui veut se connecter est bien enregistré dans la bdd (table utilisateurs)
+     * ne renvoie rien, utilise les deux $_POST du form de connexion
+     */
     public function verifierUtilisateur(string $mail, string $mdp)
     {
 
@@ -22,12 +24,14 @@ class LoginController extends Controller
                 exit;
             }
         }
-        //le mail ou le mdp ne correspond pas
+        //cas où le mail ou le mdp ne correspond pas
         $_SESSION['erreurMdp'] = true;
         header('Location: /');
         exit;
     }
-
+    /***
+     * renvoyer "true" si l'utilisateur est administrateur
+     */
     public function isTheUserAnAdmin()
     {
         if (isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['droit'] == true) {
@@ -36,6 +40,9 @@ class LoginController extends Controller
             return false;
         }
     }
+    /**
+     * détruit les variable de session en cas de déconnection de l'utilisateur
+     */
     public function deconnexion()
     {
         // remove all session variables
@@ -49,12 +56,4 @@ class LoginController extends Controller
         //TODO probleme d'url qui reste sur /gestion après la relocalisation
         exit;
     }
-    /*********** GESTION DE LA NAVBAR *********/
-
-    // public function verifierErreurMdp()
-    // {
-    //     if (isset($_SESSION['erreurMdp']) && $_SESSION['erreurMdp'] == true) {
-    //         echo ("<script>$('#modalConnexion').modal()</script>");
-    //     }
-    // }
 }

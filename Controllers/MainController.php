@@ -9,13 +9,19 @@ use App\Models\ModelEquipe;
 class MainController extends Controller
 {
 
+    /***
+     * Contient le tableau des sections "statiques" à afficher, dans l'ordre dans lequel elles doivent être affichées
+     * Ce tableau est une initialistion, il va être incrémenter au cours de la fonction index
+     */
     private $tableau_vues_donnees = array(
         0 => ['main/statique', []],
         2 => ['main/suitestatique', []],
         4 => ['main/statiquefin', []]
     );
 
-
+/***
+ * Getter pour accéder au 
+ */
     public function get_tableau_vues_donnees()
     {
         return $this->tableau_vues_donnees;

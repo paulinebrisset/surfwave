@@ -39,10 +39,10 @@ class ModelCatprod extends Model
         return $condition;
     }
 
-/* récupère tous les libellés de produits à vendre
-en fonction de l'ordre définit dans le tableau de la classe*/
+    /* récupère tous les libellés de produits à vendre
+        en fonction de l'ordre définit dans le tableau de la classe*/
     public function get_lib_values()
-    {     
+    {
         $condition = ' order by ';
         $condition .= $this->get_conditionCatProd($this->get_tableName()); //$this = ModelCatProd
         $libellesColonnes = $this->findAll($condition);

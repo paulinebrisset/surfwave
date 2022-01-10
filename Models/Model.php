@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Main\Database;
 use PDO;
-use App\Models\ModelCatprod;
 
 
 /*
@@ -78,21 +77,6 @@ class Model extends Database
         $query = $this->executerRequete('SELECT * FROM ' . $this->table . ' ' . $condition); //TODO : à vérifier 
         return $query->fetchAll();
     }
-    /* find 
-    M : Sélection d'un enregistrement directement avec son id
-    O : Tableau contenant l'enregistrement trouvé
-    I : $id id de l'enregistrement
-*/
-
-    // public function find($id, string $condition = null)
-    // {
-    //     // On exécute la requête
-    //     $whereId = ('WHERE ' . $this->first_id . ' = ');
-    //     // $whereId  = (substr($whereId, 0, -1)."="); //enlever le dernier caractère. Avoir id_item pour la table "items"
-
-    //     $query = $this->executerRequete("SELECT * FROM " . $this->table . ' ' . $whereId . $id);
-    //     return $query->fetch();
-    // }
 
     /* findBy
 M : Sélection de plusieurs enregistrements suivant un tableau de critères
@@ -126,7 +110,10 @@ I: array $criteres Tableau de critères
         return $query->fetchAll();
     }
 
-    //n'importe quelle requete envoyée par une instance
+    /***
+     * Trouver une donnée dans une table où la clé primaire est composée de deux clés étrangères
+     * on lui envoie des instances des modèles correspondant à ces trois tables pour cela. On récupère un tableau associatif
+     */
 
     public function findBy2FK(model $tableAnnexe1, model $tableAnnexe2, string $condition = null, bool $toutesColonnes)
     {
@@ -150,14 +137,14 @@ I: array $criteres Tableau de critères
         $colonnePrincipale = $this->get_columnToGetPrinted();
 
         //je sélectionne les "jolie colonnes" dans un select pour la vue au public
-        if ($toutesColonnes == false) {
+      
             $listeSelect = ('select ' . $colonnePrincipale . ', ' . $colonneAPublier1 . ', ' . $colonneAPublier2 . ' ');
-        }
+        
         //je sélectionne plus de colonnes pour la partie gestion
-        else if ($toutesColonnes == true) {
+        if ($toutesColonnes == true) {
             $first_id = $this->first_id;
             $second_id = $this->second_id;
-            $listeSelect = ('select ' . $colonnePrincipale . ', ' . $colonneAPublier1 . ', ' . $colonneAPublier2 . ', ' . $tablePrincipale . '.' . $first_id . ', ' . $tablePrincipale . '.' . $second_id . ' ');
+            $listeSelect .= (', ' . $tablePrincipale . '.' . $first_id . ', ' . $tablePrincipale . '.' . $second_id . ' ');
         }
         $from = ('from ' . $tablePrincipale . ' ');
         //Je fais respecter l'intégrité référentielle
@@ -173,7 +160,7 @@ I: array $criteres Tableau de critères
 
 
 
-    public function findMissing2FK(model $tableAnnexe1, model $tableAnnexe2, string $condition = null)
+    public function findMissing2FK(model $tableAnnexe1, model $tableAnnexe2)
     {
         /*La requete que cela va créer pour la table tarifs 
             SELECT codeDuree,categoProd, libDuree, libcategoProd
@@ -207,25 +194,6 @@ I: array $criteres Tableau de critères
 
         //J'utilise executerRequete qui est une méthode de Model pour aller chercher les donnée
         $request = $this->executerRequete($requete);
-        return $request->fetchAll();
-    }
-
-
-    //trouver le nom de la catégorie correspondant à un item
-    /*INUTILE : NE MARCHAIT QUE DANS LES CAS OU POUR TABLE LA PK EST ID_TABLE ET ID EST INT*/
-    public function findColumn(string $column, string $secondeTable, $id, $condition = null)
-    {
-        $integriteReferentielle = ('on ' . $id . '.' . $this->table . ' = ' . $id . '.' . $secondeTable);
-        $request = $this->executerRequete('select nom_' . $column . ' from ' . $nom_table . ' inner join ' . $this->table . ' on ' . $nom_table . '.id_' . $column . ' = ' . $this->table . '.id_' . $column . ' where id_' . $first_id . ' = ' . $id);
-        return $request->fetch();
-    }
-    /*INUTILE : NE MARCHAIT QUE DANS LES CAS OU POUR TABLE LA PK EST ID_TABLE ET ID EST INT*/
-    //trouver les items correspondant à une catégorie.
-    public function findChilds(string $childs, $id)
-    {
-        $nom_idChild = substr($childs, 0, -1);
-        $nom_idParent = substr($this->table, 0, -1);
-        $request = $this->executerRequete('select * from ' . $childs . ' inner join ' . $this->table . ' on ' . $childs . '.id_' . $nom_idParent . ' = ' . $this->table . '.id_' . $nom_idParent . ' where ' . $this->table . '.id_' . $nom_idParent . ' = ' . $id);
         return $request->fetchAll();
     }
 
@@ -283,7 +251,7 @@ renvoie probablement un booléen (pas tableau en tout cas, pas de fetch)
         return  $this->executerRequete($requete);
     }
 
-    public function update(int $id, array $criteres)
+    public function update(int $id, array $criteres)//update standard inutilisé
     {
         $champs = [];
         $valeurs = [];
@@ -332,35 +300,4 @@ exemple d'utilisation $machin->delete(6);
         $champs = ($this->first_id . ' = ? and ' . $this->second_id . ' =?');
         return $this->executerRequete("DELETE FROM " . $this->table . " WHERE " . $champs, $valeurs);
     }
-    /*********************PARTIE HYDRATATION = CREATE*********************/
-
-    /* 
-M: Hydrater les données. Hydrater le modèle c'est passer d'un tableau 
-donneesDeMonNouvelItem = [
-    'titre'='Item hydraté'
-    'description'=>'très bel item'
-    'publie'=>true
-    ] 
-    de là, il va voir si setTitre, setDescription existent, et les appliquer si oui en leur filant les valeurs renseignées
-I: array $donnees Tableau associatif des données
-O: self Retourne l'objet hydraté
- */
-
-    // public function hydrate(array $donnees)
-    // {
-    //     foreach ($donnees as $key => $value) {
-    //         // On récupère le nom du setter correspondant à l'attribut.
-    //         //par ex : titre donne setTitre, donc attention à l'écriture homogène des setters
-    //         //cad retrouver le nom du setter à partir du tableau
-    //         $method = 'set' . ucfirst($key);
-
-    //         // Je vérifie si le setter correspondant existe.
-    //         if (method_exists($this, $method)) {
-    //             // On appelle le setter.
-    //             $this->$method($value);
-    //         }
-    //     }
-    //     //return de l'objet hydraté
-    //     return $this;
-    // }
 }

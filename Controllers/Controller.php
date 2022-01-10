@@ -27,21 +27,18 @@ abstract class Controller
             + récupère les données et les extrait sous forme de variable
         */
         for ($i = 0; $i < sizeof($tableau_vues_donnees); $i++) {
-            //foreach ne fonctionne pas comme je veux car il ne met pas les sections dans l'ordre
+            //Les tableau de données seront toujours en position 1, O étant occupé par le nom de la vue
             if (isset($tableau_vues_donnees[$i][1])) {
                 extract($tableau_vues_donnees[$i][1]);
             }
         }
         extract($option);
-        // Crée le chemin et inclut le fichier de vue
+        // Creer le chemin et inclure le fichier de vue pour chacune des vues demandées dans le tableau
 
         /*
         On démarre le buffer de sortie a partir de maintenant, 
         chaque echo sera mis en mémoire, puis tout ce qui est en mémoire 
         doit être mis dans une variable
-
-        A partir de maintenant, toute sortie est conservée en mémoire
-        cad que les echo
     */
         $content = '';
         // Crée le chemin et inclut le fichier de vue
@@ -59,10 +56,7 @@ abstract class Controller
     */
 
 
-        // On fabrique le "template" avec default.php qui a un espace prévu pour la variable $contenu
+        // On fabrique le "template" avec default.php qui a un espace prévu pour la variable $content
         require_once($_SERVER['DOCUMENT_ROOT'] . '/Views/' . $template . '.php');
-
-        //celui-là ne s'exécute pas si le premier (l39) s'est exécuté
-        //    require_once($_SERVER['DOCUMENT_ROOT'].'/Views/'.$fichier.'.php');
     }
 }

@@ -1,7 +1,6 @@
 <section class="d-none d-md-none d-xl-block">
    <div class="container">
       <div class="bloc location">
-         <h1>Vue Tarifs</h1>
          <h2>Location de materiel</h2>
          <div class="bloc-info row">
             <div class="col-lg-6">

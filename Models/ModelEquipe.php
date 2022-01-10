@@ -23,7 +23,7 @@ class ModelEquipe extends Model
         );
     }
     /*Il faudrait mettre une partie de cette fonction dans Model pour pouvoir opitmiser avec ModelCatProd*/
-    public function get_EquipeData() // ModelTarifs l'utilise aussi
+    public function get_EquipeData() 
     {
         $tableauOrdreEquipiers = $this->ordre_selon_fonction;
         $condition = 'order by case ';
