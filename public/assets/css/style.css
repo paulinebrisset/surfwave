@@ -135,6 +135,11 @@ header nav {
 }
 
 
+/* OUverture */
+.ouverture {
+   margin-top: -1160px;
+}
+
 .pub {
    margin-top: -1160px;
 }
@@ -370,13 +375,4 @@ footer a {
       height: 50px;
       text-align: center;
    }
-}
-/********PARTIE GESTION**********/
-/* Ouverture */
-.ouverture {
-   margin-top: -1160px;
-}
-.labelFormGestion{
-   margin: 5rem;
-   min-width: 45vw;
 }
