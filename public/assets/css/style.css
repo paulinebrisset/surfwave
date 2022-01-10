@@ -380,3 +380,18 @@ footer a {
    margin: 5rem;
    min-width: 45vw;
 }
+.btngtn {
+   margin:2rem !important;
+}
+
+.gestion{
+   border-color: #f6c311;
+   text-align: center;
+   background-color: #fff;
+   padding: 40px 20px;
+   margin-bottom: 20px;
+}
+
+.gestion .btn {
+   background-color: #f6c311;
+}

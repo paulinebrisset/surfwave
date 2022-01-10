@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Model;
 
 /**
- * Modèle pour la table "items"
+ * Modèle pour la table "duree"
  */
 class ModelDuree extends Model
 {

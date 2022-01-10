@@ -13,5 +13,6 @@
 
     <?php include($_SERVER['DOCUMENT_ROOT'] . '/views/includes/footer.php') ?>
 
-</body>
+    </body>
+
 </html>

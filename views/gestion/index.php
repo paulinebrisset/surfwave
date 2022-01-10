@@ -1,10 +1,10 @@
 <section class="ouverture">
    <div class="container">
-      <div class="bloc" id="coursdesurf">
+      <div class="bloc gestion">
          <h2>Bonjour, admin</h2>
          <h3>Quel voulez-vous faire? </h3>
          <div class="row justify-content-md-center">
-            <div class="col-lg-10">
+            <div class="col-lg-11">
                <div class="row">
                   <div class="col-sm-4">
                      <div class="card">

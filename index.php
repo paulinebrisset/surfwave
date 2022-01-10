@@ -4,10 +4,7 @@
 use App\Autoload;
 use App\Main\Main;
 /*TEST*/
-$tableau=[];
-foreach ($tableau as $blabla){
-    echo('bonjour');
-}
+
 //Je définis une constante, ROOT, qui désigne le dossier racine du projet, qui est le dossier parent de public, d'om l'utilisation de dirname pour définir root
 
 define('ROOT', dirname(__FILE__)); //définit le root là où est index.php
@@ -25,7 +22,5 @@ $app = new Main();
 //On démarre l'application
 $app->start();
 
-/*****MODAL****/ ?>
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/views/includes/js.php') ?>
-</body>
-</html>
+
+include($_SERVER['DOCUMENT_ROOT'] . '/views/includes/js.php') ?>

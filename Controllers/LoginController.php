@@ -50,7 +50,6 @@ class LoginController extends Controller
 
         // destroy the session
         session_destroy();
-
         $instanceMainController = new MainController;
         $instanceMainController->index();
         //TODO probleme d'url qui reste sur /gestion après la relocalisation

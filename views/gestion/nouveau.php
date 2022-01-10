@@ -1,7 +1,7 @@
 <section class="ouverture">
     <!-- <div class="d-none d-md-none d-block"> -->
-    <div class="container-fluid">
-        <div class="bloc location">
+    <div class="container">
+        <div class="bloc gestion">
             <div class="row">
                 <h2>Ajouter un nouveau tarif</h2>
             </div>
@@ -27,14 +27,17 @@
                                 echo ('<td>' . $tarifManquant['libDuree'] . '</td>');
                                 echo ('<td>' . $tarifManquant['libcategoProd'] . '</td>');
                                 echo ('<td>
-                            <input name=' . $tarifManquant['codeDuree'] . $tarifManquant['categoProd'] . ' type="number" method="post">
+                            <input name=' . $tarifManquant['codeDuree'] . $tarifManquant['categoProd'] . ' type="number" step="0.01" method="post">
                             </td>');
                                 echo ('</tr>');
                             }
                             ?>
                     </tbody>
                 </table>
-                <input type="submit" class="btn btn-outline-danger" value="Ajouter ces nouveaux tarifs">
+                <input type="submit" class="btn btn-outline-danger btngtn" value="Ajouter ces nouveaux tarifs">
+                </form>
+                <form action="/gestion">
+                    <button type="submit" class="btn btn-outline-danger btngtn">Retour vers l'interface de gestion</button>
                 </form>
             </div>
         </div>
