@@ -35,7 +35,7 @@ class Main
         /***Est-ce que utilisateur logué et admin? */
         //TODO : controle de saisie
 
-        if (isset($_POST['logemail'])) {
+        if (isset($_POST['logemail']) &&(isset($_POST['logmdp']))) {
             $instanceLoginController = new LoginController;
             $instanceLoginController->verifierUtilisateur($_POST['logemail'], $_POST['logmdp']);
         }
@@ -124,10 +124,10 @@ class Main
             if (strcasecmp($params[0], 'gestion') == 0) { //strcasecmp pour ignorer la casse
                 $instanceLoginController = new LoginController;
                 if ($instanceLoginController->isTheUserAnAdmin() == false) {
-                    $this->renvoyerVers404();
+                    $this->renvoyerVers404();//methode de Main
                 }
             }
-            /******FIN DES CONTROLES PRINCIPAUX */
+            /******FIN DES CONTROLES PRINCIPAUX ******/
 
             $controller = '\\App\\Controllers\\' . ucfirst(array_shift($params)) . 'Controller'; //array_shift enlève la première valeur d'un tableau
             // On instancie le contrôleur

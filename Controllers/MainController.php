@@ -15,8 +15,8 @@ class MainController extends Controller
      */
     private $tableau_vues_donnees = array(
         0 => ['main/statique', []],
-        2 => ['main/suitestatique', []],
-        4 => ['main/statiquefin', []]
+        3 => ['main/suitestatique', []],
+        5 => ['main/statiquefin', []]
     );
 
 /***
@@ -46,19 +46,15 @@ class MainController extends Controller
         $tableau_vues_donnees[1] = (['tarifs/index', ['tarifs' => $tarifs]]);
 
         $instanceModelCatProd = new ModelCatprod;
-        $option['libTarifs'] = $instanceModelCatProd->get_lib_values();
-
-        /******PARTIE DYNAMIQUE 2 : les équipiers */
-        /* ensuite je prépare un tableau à envoyer à Controller, il contient toutes les
-            vues à afficher sur la page d'accueil*/
+        $libTarifs= $instanceModelCatProd->get_lib_values();
+        $tableau_vues_donnees[2] = (['tarifs/index', ['libTarifs' => $libTarifs]]);
 
         /*****PARTIE DYNAMIQUE 2 : EQUIPE */
         $instanceModelEquipe = new ModelEquipe;
 
         $equipier = $instanceModelEquipe->get_EquipeData();
-        $tableau_vues_donnees[3] = ['equipe/index', ['equipier' => $equipier]];
+        $tableau_vues_donnees[4] = ['equipe/index', ['equipier' => $equipier]];
 
-
-        $this->render($tableau_vues_donnees, 'default', $option);
+        $this->render($tableau_vues_donnees, 'default');
     }
 }

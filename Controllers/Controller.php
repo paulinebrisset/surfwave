@@ -20,7 +20,7 @@ abstract class Controller
         tableau vide par défaut, on pourra ne pas avoir de données.
     */
 
-    public function render(array $tableau_vues_donnees, string $template = 'default', array $option = [])
+    public function render(array $tableau_vues_donnees, string $template = 'default')
     {
         /*
             prend mon tableau et crée une variable pour chacune des clés renseignées
@@ -32,7 +32,6 @@ abstract class Controller
                 extract($tableau_vues_donnees[$i][1]);
             }
         }
-        extract($option);
         // Creer le chemin et inclure le fichier de vue pour chacune des vues demandées dans le tableau
 
         /*

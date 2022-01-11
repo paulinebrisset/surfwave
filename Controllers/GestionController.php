@@ -43,10 +43,11 @@ class GestionController extends Controller
         dans le cas où l'un des tarifs à afficher sur la première ligne est delete
         */
             $instanceModelCatProd = new ModelCatprod;
-            $option['libTarifs'] = $instanceModelCatProd->get_lib_values();
+            $libTarifs = $instanceModelCatProd->get_lib_values();
 
+            $tableau_vues_donnees[] = ['gestion/modifier', ['libTarifs' => $libTarifs]];
             $tableau_vues_donnees[] = ['gestion/modifier', ['prix' => $prix]];
-            $this->render($tableau_vues_donnees, 'default', $option);
+            $this->render($tableau_vues_donnees, 'default');
         }
     }
     /***

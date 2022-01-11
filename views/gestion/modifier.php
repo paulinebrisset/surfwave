@@ -9,7 +9,7 @@
                   <?php
                   //Impression de la liste des matériels dispos (libellés)
                   echo ('<th>Produit<br/>Temps </th>');
-                  foreach ($option['libTarifs'] as $nomColonnes) {
+                  foreach ($libTarifs as $nomColonnes) {
                      echo ('<th>' . $nomColonnes . '</th>');
                   }
                   echo ('<th>MAJ les tarifs</th>');
