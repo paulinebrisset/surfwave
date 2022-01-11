@@ -21,11 +21,12 @@
             <div class="form-group col">
                <label for="logemail">Adresse mail</label>
                <input type="email" class="form-control" required="required" id="logemail" name="logemail" aria-describedby="emailHelp" placeholder="Votre mail">
-               <small id="emailHelp" class="form-text text-muted"><?php if (isset($_SESSION['erreurMdp']) && ($_SESSION['erreurMdp'] == false)) {
-                                                                     echo ("We'll never share your email with anyone else");
-                                                                  } else {
-                                                                     echo ("Problème d'authentification, veuillez retenter");
-                                                                  }; ?></small>
+               <small id="emailHelp" class="form-text text-muted">
+                  <?php if (isset($_SESSION['erreurMdp']) && ($_SESSION['erreurMdp'] == true)) {
+                     echo ("Problème d'authentification, veuillez retenter");
+                  } else {
+                     echo ("We'll never share your email with anyone else");
+                  }; ?></small>
             </div>
             <div class="form-group col">
                <label for="logmdp">Mot de passe</label>

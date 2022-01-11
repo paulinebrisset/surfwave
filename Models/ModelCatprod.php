@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Model;
 
 /**
- * Modèle pour la table "items"
+ * Modèle pour la table "catprod"
  */
 class ModelCatprod extends Model
 {
@@ -30,10 +30,10 @@ class ModelCatprod extends Model
 
     public function get_conditionCatProd($table) // ModelTarifs l'utilise aussi
     {
-        $tableauIdsCatProd = $this->id_values;
+        $tableauIdsCatProd = $this->get_id_values();
         $condition = 'case ';
         foreach ($tableauIdsCatProd as $abreviation => $rang) {
-            $condition .= (' when ' . $table . '.' . $this->first_id . ' like "' . $abreviation . '" then ' . $rang);
+            $condition .= (' when ' . $table . '.' . $this->get_first_id() . ' like "' . $abreviation . '" then ' . $rang);
         }
         $condition .= ' end ';
         return $condition;

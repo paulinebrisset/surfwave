@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Model;
 
 /**
- * Modèle pour la table "items"
+ * Modèle pour la table "tarifs"
  */
 class ModelTarifs extends Model
 {
@@ -48,7 +48,6 @@ ou seulement les colones à présenter au grand public
             ('order by ' . $nomTablePrincipale . '.' . $instanceDuree->get_first_id() . ' asc, ');
 
         /* Maintenant, le but c'est que les tarifs soient récupérés dans l'ordre souhaité pour l'affichage : 
-        les planches de surf en premier, puis bodyboard, puis combinaisons. 
         Cet ordre est mémorisé dans un tableau de ModelCatProd
         TODO créer une interface où on puisse changer cet ordre ou ajouter une nouvelle catégorie
         Une méthode de ModelCatProd permet de récupérer un string qui met tout ça en ordre */
@@ -65,30 +64,29 @@ ou seulement les colones à présenter au grand public
 
     public function updateTarif(array $prixAChanger)
     {
+        $cntrl = false;
         foreach ($prixAChanger as $key => $value) {
+
             $cle1 = '\'' . substr($key, 2, 2) . '\''; //Je les met entre guillement sinon requete ne fonctionne pas. Ici on va retourver les categoProd
             $cle2 = '\'' . substr($key, 0, 2) . '\''; //le code duree
-            return $this->update2FK($cle1, $cle2, $value); //contient un tableau associatif avec la requete dedans quand ok
-            return true;
+            $cntrl = $this->update2FK($cle1, $cle2, $value); //contient un tableau associatif avec la requete dedans quand ok
         }
+        return $cntrl;
     }
     /*********CREATE **** */
     public function creerTarif(array $nouveauxTarifs)
-    { //[$concat=>$_POST[$concat]];
-
+    { //l'array en question : [$concat=>$_POST[$concat]];
+        $resultat = false;
         foreach ($nouveauxTarifs as $key => $value) {
-            var_dump($nouveauxTarifs);
-            $cle1 = substr($key, 2, 2); //Je les met entre guillement sinon requete ne fonctionne pas. Ici le code categoprod
-
-            echo ($cle1);
-            $cle2 = substr($key, 0, 2); //le code duree
+            $cle1 = substr($key, 2, 2);
+            $cle2 = substr($key, 0, 2);
 
             $values[$this->get_first_id()] = $cle1;
             $values[$this->get_second_id()] = $cle2;
             $values[$this->get_columnToGetPrinted()] = $value;
             $resultat = $this->creer($values);
-            return $resultat;
         }
+        return $resultat;
     }
     public function trouverLesTarifsManquants()
     {

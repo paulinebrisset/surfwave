@@ -1,7 +1,7 @@
 <section class="ouverture">
    <!-- <div class="d-none d-md-none d-block"> -->
-   <div class="container-fluid">
-      <div class="bloc location">
+   <div class="container">
+      <div class="bloc gestion">
          <div class="row">
             <h2>Modifier les tarifs</h2>
          </div>
@@ -37,7 +37,7 @@
                      //tant qu'on parle toujours de la même durée de location = comparaison de deux chaînes de caractères
                      if (strcmp($location['libDuree'], $counter) == 0) {
                         echo ('<td>
-                            <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" method="post" placeholder="' . $location['prixLocation'] . '">                        </td>');
+                            <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" step="0.01" method="post" placeholder="' . $location['prixLocation'] . '">                        </td>');
                      } else {
                         //changement de duree de location
                         $counter = $location['libDuree'];
@@ -47,11 +47,11 @@
                         echo ('</tr><tr>');
                         echo ('<td>' . $location['libDuree'] . '</td>');
                         echo ('<td>
-                     <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" method="post" placeholder="' . $location['prixLocation'] . '">                 </td>');
+                     <input name=' . $location['codeDuree'] . $location['categoProd'] . ' type="number" step="0.01" method="post" placeholder="' . $location['prixLocation'] . '">                 </td>');
                      }
                   }
                   echo ('<td>
-                            <input type="submit" class="btn btn-outline-danger" value="Modifier">
+                            <input type="submit" class="btn btn-outline-danger btngtn" value="Modifier">
                         </td>');
                   echo ('</tr>');
                   echo ('</form>');
@@ -59,5 +59,11 @@
                </tbody>
             </table>
          </div>
+         <div class="row">
+            <form action="/gestion">
+               <button type="submit" class="btn btn-outline-danger btngtn">Retour vers l'interface de gestion</button>
+            </form>
+         </div>
       </div>
+   </div>
 </section>

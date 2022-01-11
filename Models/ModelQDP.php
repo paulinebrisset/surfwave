@@ -3,7 +3,7 @@ namespace App\Models;
 use App\Models\Model;
 
 /**
- * Modèle pour la table "items"
+ * Modèle pour la table "qdp"
  */
 class ModelQDP extends Model {
 

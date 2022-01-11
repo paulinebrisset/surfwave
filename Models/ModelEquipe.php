@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models;
 
 /**
- * Modèle pour la table "items"
+ * Modèle pour la table "equipe"
  */
 class ModelEquipe extends Model
 {
@@ -22,13 +22,17 @@ class ModelEquipe extends Model
             'e-commerce'  => 4,
         );
     }
-    /*Il faudrait mettre une partie de cette fonction dans Model pour pouvoir opitmiser avec ModelCatProd*/
-    public function get_EquipeData() 
+    /*TODO Il faudrait mettre une partie de cette fonction dans Model pour pouvoir opitmiser avec ModelCatProd*/
+    /***
+     * Réupérer toute la data concernant les équipiers
+     * elle sera rangée selon la fonction de l'équipier
+     */
+    public function get_EquipeData()
     {
         $tableauOrdreEquipiers = $this->ordre_selon_fonction;
         $condition = 'order by case ';
         foreach ($tableauOrdreEquipiers as $membre => $rang) {
-            $condition .= (' when ' . $this->columnToGetPrinted . ' like "' . $membre . '" then ' . $rang);
+            $condition .= (' when ' . $this->get_columnToGetPrinted() . ' like "' . $membre . '" then ' . $rang);
         }
         $condition .= ' end ';
         return $this->findAll($condition);
