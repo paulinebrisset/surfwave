@@ -21,8 +21,7 @@
                      <div class="card">
                         <div class="card-body">
                            <h4 class="card-title">Nouveau tarif</h4>
-                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error officia perspiciatis voluptas porro in. Soluta.</p>
-
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error officia perspiciatis voluptas.</p>
                            <form action="/gestion/nouveau">
                               <button type="submit" class="btn btn-lg">Nouveau</button>
                            </form>
@@ -33,7 +32,7 @@
                      <div class="card">
                         <div class="card-body">
                            <h4 class="card-title">Supprimer</h4>
-                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ea, neque quasi suscipit consectetur.</p>
+                           <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus qui ea, neque.</p>
                            <form action="/gestion/supprimer">
                               <button type="submit" class="btn btn-lg">Supprimer</button>
                            </form>
@@ -45,7 +44,7 @@
          </div>
          <div class="row">
             <div class="col-lg-12">
-               <img src="public/assets/images/coursdesurf.jpg" alt="Cours de surf" class="img-thumbnail">
+               <img src="/public/assets/images/coursdesurf.jpg" alt="Cours de surf" class="img-thumbnail">
             </div>
          </div>
       </div>

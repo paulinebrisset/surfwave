@@ -9,12 +9,12 @@
                   </div>
                   <div id="social" class="d-none d-sm-block d-lg-block">
                      <p>Restons connectés !</p>
-                     <img src="public/assets/images/facebook.png" alt="Facebook">
-                     <img src="public/assets/images/twitter.png" alt="Twitter">
-                     <img src="public/assets/images/googleplus.png" alt="Google Plus">
-                     <img src="public/assets/images/youtube.png" alt="YouTube">
-                     <img src="public/assets/images/pinterest.png" alt="Pinterest">
-                     <img src="public/assets/images/instagram.png" alt="Instagram">
+                     <img src="/public/assets/images/facebook.png" alt="Facebook">
+                     <img src="/public/assets/images/twitter.png" alt="Twitter">
+                     <img src="/public/assets/images/googleplus.png" alt="Google Plus">
+                     <img src="/public/assets/images/youtube.png" alt="YouTube">
+                     <img src="/public/assets/images/pinterest.png" alt="Pinterest">
+                     <img src="/public/assets/images/instagram.png" alt="Instagram">
                   </div>
                </div>
                <div class="col-lg-4 col-sm-6">
@@ -41,9 +41,9 @@
          </div>
       </div>
       <div id="soutien">
-         <img src="public/assets/images/regionreunion.jpg" alt="Région Réunion">
-         <img src="public/assets/images/departement974.jpg" alt="Département de la Réunion">
-         <img src="public/assets/images/irt.jpg" alt="IRT">
+         <img src="/public/assets/images/regionreunion.jpg" alt="Région Réunion">
+         <img src="/public/assets/images/departement974.jpg" alt="Département de la Réunion">
+         <img src="/public/assets/images/irt.jpg" alt="IRT">
       </div>
 
    </footer>
